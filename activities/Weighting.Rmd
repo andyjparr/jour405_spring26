@@ -1,0 +1,238 @@
+---
+title: "Survey Weighting Exercise: Nonvoter Study Analysis"
+date: "2025-04-01"
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+install.packages("kableExtra")
+library(kableExtra)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+
+```
+
+# Introduction
+
+This notebook explores how survey weighting affects data analysis and interpretation in journalism. We'll use a dataset from a 2020 survey on voting behavior to understand weighting concepts and how they can change our understanding of public opinion data. The codebook with the questions from the survey is here: https://github.com/dwillis/jour405_files/blob/main/nonvoters_codebook.pdf
+
+## What is Survey Weighting?
+
+Survey weighting is like adjusting the volume on different voices in a conversation to make sure everyone is heard equally. In survey research:
+
+- Some groups of people are more likely to answer surveys than others
+- This can make the survey sample different from the actual population
+- Survey weights help fix this imbalance by giving more "volume" to underrepresented groups and less to overrepresented groups
+
+**For example:** If your survey has too many college graduates compared to the general population, you might give each college graduate's response a weight of 0.8 (counting as 80% of a response) and each non-college graduate a weight of 1.2 (counting as 120% of a response).
+
+## Why Should Journalists Care?
+
+- Unweighted results might give a misleading picture of public opinion
+- Proper weighting helps ensure your reporting accurately represents the community
+- Understanding weighting helps you critically evaluate polls from other sources
+- Small differences in weighting can sometimes change the headline of your story
+
+## Our Questions
+
+1. How does weighting affect our estimates of voting intentions?
+2. Which demographic groups show the largest differences between weighted and unweighted results?
+3. How might weighting influence reporting of this data?
+
+# Data Overview
+
+The nonvoters dataset contains survey responses about voting intentions and behaviors from 5,836 American adults. The survey was conducted prior to the 2020 election and includes a variety of demographic information and political attitudes.
+
+```{r load-data}
+# Load the dataset
+nonvoters_data <- read_csv("https://raw.githubusercontent.com/dwillis/jour405_files/refs/heads/main/nonvoters_data.csv")
+
+# Look at the structure of the data
+glimpse(nonvoters_data)
+```
+
+Let's break down the key variables we'll focus on:
+
+- `weight`: The survey weight assigned to each respondent, showing how much their response "counts"
+- `Q21`: Voting intention with these values:
+  - 1 = Yes (plans to vote)
+  - 2 = No (does not plan to vote)
+  - 3 = Unsure/Undecided
+- `voter_category`: Respondent's voting history:
+  - "always": Votes in all or nearly all elections
+  - "sporadic": Votes occasionally
+  - "rarely/never": Rarely or never votes
+- Demographics: `race`, `gender`, `educ` (education level), `income_cat`
+
+# Understanding Survey Weights
+
+Before we dive into the analysis, let's examine the weights in our dataset to understand how they're distributed.
+
+```{r examine-weights}
+# Summary statistics of weights
+summary(nonvoters_data$weight)
+
+# Histogram of weights
+ggplot(nonvoters_data, aes(x = weight)) +
+  geom_histogram(bins = 30, fill = "skyblue", color = "white") +
+  theme_minimal() +
+  labs(
+    title = "Distribution of Survey Weights",
+    x = "Weight",
+    y = "Count"
+  )
+```
+
+**Explanation:** 
+- The summary statistics show us the minimum, maximum, and typical weights in the dataset
+- The histogram shows how many respondents have each weight value
+- Most weights cluster around 1.0 (which means those respondents count as exactly one person)
+- Weights below 1.0 mean a respondent is overrepresented (counts as less than one person)
+- Weights above 1.0 mean a respondent is underrepresented (counts as more than one person)
+
+**Questions:**
+
+1. What is the range of weights in this dataset?
+
+2. What does it mean when a respondent has a weight of 0.23? What about 3.04?
+
+3. Why might some respondents be weighted more heavily than others?
+
+# Exercise 1: Voter Categories and Weighting
+
+First, let's look at how many people fall into each voting category in our sample.
+
+```{r voter-categories}
+library(knitr)
+# Count of respondents by voter category
+nonvoters_data |>
+  count(voter_category) |>
+  mutate(percentage = n / sum(n) * 100) |>
+  kable(digits = 1, col.names = c("Voter Category", "Count", "Percentage (%)"))
+```
+
+**Explanation:** This table shows the breakdown of our sample by voting history. We can see that most respondents (44.1%) are "sporadic" voters, followed by "always" voters (31.0%), and "rarely/never" voters (24.9%).
+
+Now, let's compare unweighted and weighted voting intentions by voter category.
+
+## Part A: Unweighted Analysis
+
+First, we'll calculate the raw percentages without applying weights:
+
+```{r unweighted-by-category}
+# Calculate unweighted percentages
+unweighted_by_voter_category <- nonvoters_data |>
+  # Filter out missing responses
+  filter(!is.na(Q21), Q21 > 0) |>
+  # Group by voter category and response
+  group_by(voter_category, Q21) |>
+  # Count responses in each group
+  summarize(count = n(), .groups = "drop_last") |>
+  # Calculate percentages within each voter category
+  mutate(total = sum(count),
+         percentage = count / total * 100) |>
+  ungroup()
+
+# Create a more readable version with voting intentions as columns
+unweighted_summary <- unweighted_by_voter_category |>
+  pivot_wider(
+    id_cols = voter_category,
+    names_from = Q21,
+    values_from = percentage,
+    names_prefix = "pct_"
+  ) |>
+  rename(
+    "Yes (%)" = pct_1,
+    "No (%)" = pct_2,
+    "Unsure (%)" = pct_3
+  )
+
+kable(unweighted_summary, digits = 1, caption = "Unweighted Voting Intentions by Voter Category")
+```
+
+**Explanation:**
+- This table shows the percentage of respondents in each voter category who said "Yes," "No," or "Unsure" when asked if they plan to vote
+- We calculated these percentages by simply counting responses and dividing by the total in each category
+- No weights have been applied yet—each respondent counts equally
+- Notice that even among "rarely/never" voters, a high percentage (71.8%) say they plan to vote in the upcoming election
+
+## Part B: Weighted Analysis
+
+Now, let's apply the survey weights to the same analysis. Instead of just counting respondents, we'll sum their weights:
+
+```{r weighted-by-category}
+# YOUR TASK: Calculate the weighted percentages
+# Use the weight variable to adjust the counts
+
+weighted_by_voter_category <- nonvoters_data |>
+  # Filter out missing responses, same as before
+  filter(!is.na(Q21), Q21 > 0) |>
+  # Group by voter category and response
+  group_by(voter_category, Q21) |>
+  # Instead of counting, sum the weights
+  summarize(weighted_count = sum(weight), .groups = "drop_last") |>
+  # Calculate percentages based on weighted counts
+  mutate(weighted_total = sum(weighted_count),
+         weighted_percentage = weighted_count / weighted_total * 100) |>
+  ungroup()
+
+weighted_summary <- weighted_by_voter_category |>
+  pivot_wider(
+    id_cols = voter_category,
+    names_from = Q21,
+    values_from = weighted_percentage,
+    names_prefix = "pct_"
+  ) |>
+  rename(
+    "Yes (%)" = pct_1,
+    "No (%)" = pct_2,
+    "Unsure (%)" = pct_3
+  )
+
+kable(weighted_summary, digits = 1, caption = "Weighted Voting Intentions by Voter Category")
+```
+
+**Explanation:**
+- Now we've calculated percentages by summing the weights instead of simply counting people
+- Each respondent contributes to the total based on their assigned weight value
+- This gives us estimates that should better reflect the true population
+- Notice how some percentages have changed from the unweighted analysis
+
+## Part C: Comparing Differences
+
+Let's create a comparison table to clearly see the differences between weighted and unweighted results:
+
+```{r category-comparison}
+comparison <- unweighted_summary |>
+  # Join the two tables to compare them
+  inner_join(weighted_summary, by = "voter_category", suffix = c("_unweighted", "_weighted")) |>
+  # Calculate the differences in percentage points
+  mutate(
+    yes_diff = `Yes (%)_weighted` - `Yes (%)_unweighted`,
+    no_diff = `No (%)_weighted` - `No (%)_unweighted`,
+    unsure_diff = `Unsure (%)_weighted` - `Unsure (%)_unweighted`
+  ) |>
+  # Select just the differences for our table
+  select(voter_category, yes_diff, no_diff, unsure_diff) |>
+  rename(
+    "Yes (% point diff)" = yes_diff,
+    "No (% point diff)" = no_diff,
+    "Unsure (% point diff)" = unsure_diff
+  )
+
+kable(comparison, digits = 1, caption = "Difference Between Weighted and Unweighted Results (percentage points)")
+```
+
+**Explanation:**
+- This table shows how many percentage points the results changed after applying weights
+- Positive numbers mean the weighted percentage is higher; negative numbers mean it's lower
+- For example, after weighting, the percentage of "rarely/never" voters saying "Yes" decreased by 3.6 percentage points
+- These differences might seem small, but in a close election, even small shifts can be meaningful for reporting
+
+**Answer These Questions:**
+
+1. Which voter category shows the biggest difference between weighted and unweighted results?
+
+2. How might these differences affect reporting on likely voter turnout?
+
+3. Why do you think these differences exist? What does this tell us about who might be over or under-represented in the sample?

@@ -1,0 +1,294 @@
+---
+title: "HW11: Effect Size"
+name: REPLACE WITH YOUR NAME
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+```
+
+## Introduction: The Limits of P-Values
+
+In the previous homework on test scores, we learned how to use hypothesis testing to determine if a difference is *statistically significant*. But here's a crucial question journalists need to ask: **Just because something is statistically significant, does that mean it matters?**
+
+Consider this scenario: A pharmaceutical company announces that their new weight-loss drug produces "statistically significant" weight loss (p < 0.001). Sounds impressive, right? But what if the actual weight loss was only 0.5 pounds over six months? That's a real effect, and with a large enough sample it would be statistically significant, but is it *meaningful* to patients?
+
+This is where effect size comes in. Effect size measures the _magnitude_ of an effect, not just whether it exists. As journalists, we need both pieces of information to tell accurate stories.
+
+## The Scenario: Two School Districts, Two Reading Programs
+
+Two school districts have implemented new reading programs and both superintendents claim success. Your editor wants you to investigate which program actually made a bigger difference for students.
+
+**District A (Small Class Sizes):**
+- Previous average score: 72.6 points (SD = 4.8)
+- New scores from 12 classrooms: 74, 76, 73, 75, 78, 77, 74, 79, 75, 76, 77, 75
+
+**District B (Large Class Sizes):**
+- Previous average score: 72.6 points (SD = 4.8)
+- New scores from 150 classrooms: The average is 73.8 points (SD = 5.1)
+
+Both districts started from the same baseline. Let's investigate.
+
+## Task 1: Set Up the Data (2 points)
+
+First, let's organize the data for both districts. Fill in the REPLACE_ME values.
+
+```{r}
+# District A data (you've seen this before!)
+district_a_prior_mean <- REPLACE_ME
+district_a_prior_sd <- REPLACE_ME
+
+district_a_scores <- c(74, 76, 73, 75, 78, 77, 74, 79, 75, 76, 77, 75)
+
+district_a_data <- tibble(
+  classroom = paste("Classroom", 1:12),
+  reading_score = district_a_scores
+)
+
+# District B data (summary statistics only)
+district_b_prior_mean <- 72.6
+district_b_prior_sd <- 4.8
+district_b_new_mean <- 73.8
+district_b_new_sd <- 5.1
+district_b_n <- 150
+
+# Calculate District A statistics
+district_a_stats <- district_a_data |>
+  summarise(
+    new_mean = mean(reading_score),
+    new_sd = sd(reading_score),
+    n = n()
+  )
+
+district_a_stats
+```
+
+### Reflection Question 1:
+Looking at just the raw numbers, which district appears to have a larger improvement? District A improved from 72.6 to what average? District B improved from 72.6 to what average?
+
+ANSWER HERE
+
+
+## Task 2: Run Hypothesis Tests for Both Districts (3 points)
+
+Let's test whether each district's improvement is statistically significant.
+
+```{r}
+# District A: One-sample t-test
+district_a_ttest <- t.test(
+  district_a_data$reading_score,
+  mu = district_a_prior_mean,
+  alternative = "greater"
+)
+
+cat("District A Results:\n")
+district_a_ttest
+```
+
+Now let's calculate the t-statistic for District B. Since we only have summary statistics (not individual scores), we'll calculate it manually.
+
+```{r}
+# District B: Manual t-test calculation
+# t = (sample_mean - population_mean) / (sample_sd / sqrt(n))
+
+district_b_t_stat <- (district_b_new_mean - district_b_prior_mean) / (district_b_new_sd / sqrt(REPLACE_ME))
+
+# Calculate p-value for one-sided test
+district_b_p_value <- pt(district_b_t_stat, df = district_b_n - 1, lower.tail = FALSE)
+
+cat("District B Results:\n")
+cat("t-statistic:", round(district_b_t_stat, 4), "\n")
+cat("p-value:", format(district_b_p_value, scientific = FALSE, digits = 6), "\n")
+```
+
+### Reflection Question 2:
+Based on the p-values alone, which district has stronger evidence of improvement? Which result would make a better headline if you only looked at statistical significance?
+
+ANSWER HERE
+
+
+## Task 3: Calculate Effect Size Using Cohen's d (5 points)
+
+Now let's calculate **Cohen's d**, the most common measure of effect size. Cohen's d tells us how many standard deviations apart two means are.
+
+**The formula:**
+$$d = \frac{\text{Mean}_{\text{after}} - \text{Mean}_{\text{before}}}{\text{Standard Deviation}}$$
+
+**Interpreting Cohen's d:**
+- Small effect: d ≈ 0.2
+- Medium effect: d ≈ 0.5
+- Large effect: d ≈ 0.8
+
+```{r}
+# Calculate Cohen's d for District A
+# We use the prior (population) standard deviation as our reference
+district_a_cohens_d <- (district_a_stats$new_mean - district_a_prior_mean) / district_a_prior_sd
+
+cat("District A Cohen's d:", round(district_a_cohens_d, 3), "\n")
+
+# Calculate Cohen's d for District B
+district_b_cohens_d <- (REPLACE_ME - REPLACE_ME) / district_b_prior_sd
+
+cat("District B Cohen's d:", round(district_b_cohens_d, 3), "\n")
+```
+
+### Reflection Question 3:
+Using the interpretation guidelines above (small ≈ 0.2, medium ≈ 0.5, large ≈ 0.8), how would you classify each district's effect size? Which program produced a larger practical effect?
+
+ANSWER HERE
+
+
+## Task 4: Visualize the Difference (3 points)
+
+Let's create a visualization that shows both the raw improvement AND the effect size.
+
+```{r}
+# Create comparison data
+comparison_data <- tibble(
+  District = c("District A", "District B"),
+  Prior_Mean = c(district_a_prior_mean, district_b_prior_mean),
+  New_Mean = c(district_a_stats$new_mean, district_b_new_mean),
+  Improvement = c(district_a_stats$new_mean - district_a_prior_mean, 
+                  district_b_new_mean - district_b_prior_mean),
+  Sample_Size = c(district_a_stats$n, district_b_n),
+  P_Value = c(district_a_ttest$p.value, district_b_p_value),
+  Cohens_d = c(district_a_cohens_d, district_b_cohens_d),
+  Effect_Category = c(
+    case_when(
+      abs(district_a_cohens_d) < 0.2 ~ "Negligible",
+      abs(district_a_cohens_d) < 0.5 ~ "Small",
+      abs(district_a_cohens_d) < 0.8 ~ "Medium",
+      TRUE ~ "Large"
+    ),
+    case_when(
+      abs(district_b_cohens_d) < 0.2 ~ "Negligible",
+      abs(district_b_cohens_d) < 0.5 ~ "Small",
+      abs(district_b_cohens_d) < 0.8 ~ "Medium",
+      TRUE ~ "Large"
+    )
+  )
+)
+
+comparison_data
+```
+
+```{r}
+# Create a bar chart comparing improvements
+ggplot(comparison_data, aes(x = District, y = Improvement, fill = Effect_Category)) +
+  geom_col() +
+  geom_text(aes(label = paste0("+", round(Improvement, 1), " points\n",
+                               "d = ", round(Cohens_d, 2), "\n",
+                               "n = ", Sample_Size)), 
+            vjust = -0.5, size = 3.5) +
+  scale_fill_manual(values = c("Negligible" = "gray70", "Small" = "lightblue", 
+                               "Medium" = "steelblue", "Large" = "darkblue")) +
+  labs(
+    title = "Reading Score Improvements: Raw Points vs. Effect Size",
+    subtitle = "Both districts improved, but which improvement matters more?",
+    y = "Score Improvement (points)",
+    x = NULL,
+    fill = "Effect Size"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    legend.position = "bottom"
+  ) +
+  ylim(0, max(comparison_data$Improvement) * 1.5)
+```
+
+### Reflection Question 4:
+Look at the chart. District B has a *more* statistically significant result (lower p-value) but a *smaller* effect size. How is this possible? What role does sample size play?
+
+ANSWER HERE
+
+
+## Task 5: The Journalism Problem (5 points)
+
+Here's where it gets interesting for reporters. Let's look at what each superintendent might say:
+
+**Superintendent A:** "Our reading program produced a *medium* effect size improvement. Students improved by an average of 3 points."
+
+**Superintendent B:** "Our results are *highly statistically significant* with p < 0.001. The data proves our program works."
+
+Both statements are technically true. Which one is more meaningful?
+
+```{r}
+# Create a summary table for your story
+story_summary <- comparison_data |>
+  mutate(
+    `Significant at 0.05?` = ifelse(P_Value < 0.05, "Yes", "No"),
+    `P-Value` = format(P_Value, scientific = FALSE, digits = 4),
+    `Raw Improvement` = paste0("+", round(Improvement, 1), " points"),
+    `Effect Size (d)` = round(Cohens_d, 2),
+    `Effect Category` = Effect_Category,
+    `Sample Size` = Sample_Size
+  ) |>
+  select(District, `Sample Size`, `Raw Improvement`, `P-Value`, 
+         `Significant at 0.05?`, `Effect Size (d)`, `Effect Category`)
+
+story_summary
+```
+
+### Reflection Question 5:
+You're writing a story comparing these two reading programs. Write two different headlines and ledes:
+
+**Version 1 - Focusing only on statistical significance:**
+Headline: 
+Lede: 
+
+**Version 2 - Incorporating effect size:**
+Headline: 
+Lede: 
+
+Which version tells readers what they actually need to know? Why?
+
+ANSWER HERE
+
+
+## Task 6: Calculate Effect Size for a New Scenario (5 points)
+
+Your editor now wants you to investigate a tutoring company's claims. They say their program produces "dramatic improvements" in math scores.
+
+**Before tutoring:** Mean = 68, SD = 12
+**After tutoring (45 students):** Mean = 71, SD = 11
+
+Calculate the effect size and determine if the claim of "dramatic improvement" is justified.
+
+```{r}
+# Calculate the statistics
+tutoring_prior_mean <- 68
+tutoring_prior_sd <- 12
+tutoring_new_mean <- REPLACE_ME
+tutoring_new_sd <- REPLACE_ME
+tutoring_n <- REPLACE_ME
+
+# Calculate Cohen's d
+tutoring_cohens_d <- (tutoring_new_mean - tutoring_prior_mean) / tutoring_prior_sd
+
+cat("Tutoring Program Cohen's d:", round(tutoring_cohens_d, 3), "\n")
+cat("Effect category:", 
+    case_when(
+      abs(tutoring_cohens_d) < 0.2 ~ "Negligible",
+      abs(tutoring_cohens_d) < 0.5 ~ "Small",
+      abs(tutoring_cohens_d) < 0.8 ~ "Medium",
+      TRUE ~ "Large"
+    ), "\n")
+
+# Run a t-test to check significance
+# Since we only have summary stats, calculate manually
+tutoring_t_stat <- (tutoring_new_mean - tutoring_prior_mean) / (tutoring_new_sd / sqrt(tutoring_n))
+tutoring_p_value <- pt(tutoring_t_stat, df = tutoring_n - 1, lower.tail = FALSE)
+
+cat("t-statistic:", round(tutoring_t_stat, 3), "\n")
+cat("p-value:", round(tutoring_p_value, 4), "\n")
+```
+
+### Reflection Question 6:
+Is the tutoring company's claim of "dramatic improvement" justified? What questions would you ask the company's spokesperson? What would your headline be?
+
+ANSWER HERE
+
+
+When finished, save your work and submit via GitHub.

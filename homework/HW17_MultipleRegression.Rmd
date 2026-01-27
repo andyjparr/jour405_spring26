@@ -1,0 +1,147 @@
+---
+title: "Multiple Regression Analysis: Maryland Voter Turnout"
+name: "YOUR NAME HERE"
+---
+
+# Introduction
+
+Multiple regression analysis is a statistical method used to understand the relationship between one dependent variable and two or more independent variables. This analysis is particularly useful in journalism for exploring complex relationships in civic data, such as how different demographic and socioeconomic factors collectively impact voter turnout. By understanding these relationships, journalists can provide deeper insights into civic participation patterns and identify potential barriers to voting.
+
+```{r setup}
+library(tidyverse)
+#install.packages('corrplot')
+library(corrplot)
+```
+
+## Load the Data
+
+The first step in our analysis is to load the data. Here we read the data from a CSV file, which contains information about voter turnout and various demographic factors across Maryland counties. This dataset will be used to build our model that will try to see which factors are most important in predicting voter turnout. The turnout percentage is from the 2024 general election.
+
+```{r}
+md_turnout <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/md_turnout.csv")
+head(md_turnout)
+```
+
+## Task 1: Exploratory Data Analysis (5 points)
+
+Before building our model, let's explore the data to understand the variables and their relationships. Examine the correlation matrix to see how the independent variables relate to each other and to the dependent variable (voter turnout). Which variables seem to be correlated? Are there any that are not correlated at all? Also look at the multiple scatterplots. Which variables seem to have a linear relationship with the dependent variable? Which do not?
+
+ANSWER HERE
+
+
+```{r}
+# Summary statistics
+summary(md_turnout)
+
+# Create correlation matrix
+selected_vars <- md_turnout |> 
+  select(turnout, population, income, pct_bachelors_higher, 
+         pct_unemployed, median_age, pct_white)
+correlation_matrix <- cor(selected_vars)
+print(correlation_matrix)
+
+# Visualize correlation matrix
+corrplot(correlation_matrix, method = "circle")
+
+# Create scatterplots
+md_turnout |>
+  pivot_longer(cols = c(population, income, pct_bachelors_higher, 
+                       pct_unemployed, median_age, pct_white),
+               names_to = "variable", 
+               values_to = "value") |>
+  ggplot(aes(x = value, y = turnout)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ variable, scales = "free_x") +
+  labs(title = "Relationship between predictors and voter turnout",
+       y = "Voter turnout (%)")
+```
+
+## Task 2: Initial Model Evaluation (5 points)
+
+Next, we construct an initial linear model to analyze how different factors influence voter turnout across Maryland counties. This model helps us quantify the relationships and assess which factors are significant predictors of turnout. 
+
+### Residuals
+
+The residuals of a model are the differences between observed values and the values predicted by the model. For this model:
+
+* **Min and Max** values indicate the range of residuals. 
+* **Median** value tells us if the model is generally centered around the actual data points.
+
+### Coefficients
+
+The coefficients tell us the estimated effect of each independent variable on the dependent variable:
+
+* **Population**: Is the coefficient positive or negative? Is it statistically significant?
+* **Income**: Does higher income correlate with higher turnout?
+* **Education (pct_bachelors_higher)**: How does education level impact voter participation?
+* **Unemployment**: Is there a relationship between unemployment and voter turnout?
+* **Median Age**: Do counties with older populations have different turnout rates?
+* **Race (pct_white)**: Is there a relationship between racial composition and turnout?
+
+### Model Fit
+
+* **Residual Standard Error**: How much does the model typically deviate from actual turnout?
+* **Multiple R-squared**: What percentage of the variability in turnout is explained by the model?
+* **Adjusted R-squared**: How well does the model fit after accounting for the number of variables?
+* **F-statistic**: Is the model as a whole statistically significant?
+
+
+Examine the output of the model, checking the coefficients, residuals, and overall model fit. How well does this multiple variable model predict turnout? Do any of the variables seem to be insignificant? Is this a useful model, based on what you've seen? Why?
+
+ANSWER HERE
+
+```{r}
+# Build initial model with all predictors
+initial_model <- lm(turnout ~ population + income + pct_bachelors_higher + 
+                   pct_unemployed + median_age + pct_white, data = md_turnout)
+summary(initial_model)
+
+```
+
+## Task 3: Model Refinement (5 points)
+
+Create three alternative models by adding or removing variables to see if we can improve the model's performance. Turnout will always be the dependent variable, but you should alter the independent variables by removing or adding some. Then compare the models using adjusted R-squared values. Are any of the models significantly better than the others?
+
+ANSWER HERE
+
+```{r}
+# Model 2
+model2 <- lm(turnout ~ REPLACE ME, data = md_turnout)
+summary(model2)
+
+# Model 3
+model3 <- lm(turnout ~ REPLACE ME, data = md_turnout)
+summary(model3)
+
+# Model 4
+model4 <- lm(turnout ~ REPLACE ME, data = md_turnout)
+summary(model4)
+
+# Compare models
+cat("Model 1 (Full model) - Adjusted R-squared:", summary(initial_model)$adj.r.squared, "\n")
+cat("Model 2 - Adjusted R-squared:", summary(model2)$adj.r.squared, "\n")
+cat("Model 3 - Adjusted R-squared:", summary(model3)$adj.r.squared, "\n")
+cat("Model 4 - Adjusted R-squared:", summary(model4)$adj.r.squared, "\n")
+
+# Create comparison chart
+model_names <- c("Full model", "Model 2", "Model 3", "Model 4")
+adj_r_squared <- c(summary(initial_model)$adj.r.squared,
+                   summary(model2)$adj.r.squared,
+                   summary(model3)$adj.r.squared,
+                   summary(model4)$adj.r.squared)
+
+model_comparison <- data.frame(Model = model_names, Adjusted_R_squared = adj_r_squared)
+ggplot(model_comparison, aes(x = reorder(Model, Adjusted_R_squared), y = Adjusted_R_squared)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Model Comparison by Adjusted R-squared",
+       x = "Model")
+```
+
+
+## Task 4: Using the Model (3 points)
+
+Without using the words "multiple regression model", describe how you could use this analysis to cover an election or voter participation story.
+
+ANSWER HERE
