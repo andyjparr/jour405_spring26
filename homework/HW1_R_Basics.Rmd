@@ -16,7 +16,9 @@ In this task, you will learn about the R programming language and write basic R 
 Put your code inside the block below, then click the green arrow to run your code.
 
 ```{r}
-
+x <- 1
+y <- 2
+z <- 3
 ```
 
 ### 1.2: Functions
@@ -26,13 +28,13 @@ A function is code that produces some result, like printing. The function for pr
 ## Have R print Hello World
 
 ```{r}
-
+print("Hello World")
 ```
 
 ## Have R print the number 42
 
 ```{r}
-
+print(42)
 ```
 
 ### 1.3: Computations
@@ -42,19 +44,19 @@ R can do math, too, which is very necessary for statistics. Let's have it - not 
 ## Add 17 to 5
 
 ```{r}
-
+17 + 5
 ```
 
 ## Add 5 to x (remember x from above?)
 
 ```{r}
-
+x + 5
 ```
 
 ## Add 15 to 5 and store it in a variable called n
 
 ```{r}
-
+n <- 15 + 5
 ```
 
 ## Find the square root of 16 and store it in a variable called p.
@@ -62,7 +64,7 @@ R can do math, too, which is very necessary for statistics. Let's have it - not 
 You'll need to look up the function to calculate a square root.
 
 ```{r}
-
+p <- sqrt(16)
 ```
 
 ## Calling variable in R
@@ -72,13 +74,13 @@ Calling variables means just typing the variable name in a code block and runnin
 Call y, see y value in console
 
 ```{r}
-
+y
 ```
 
 Call x, see x value in console
 
 ```{r}
-
+x
 ```
 
 ### 1.4: Using the Tidyverse Library
@@ -88,10 +90,9 @@ We'll be using different tools in order to work with data and generate statistic
 ## Load the tidyverse
 
 ```{r}
-
+library(tidyverse)
 
 ```
-
 
 ## Task Two: Data Structures in R: Data frames
 
@@ -102,13 +103,29 @@ Data frames are how R stores tabular data, like a spreadsheet. In this task, you
 One thing we'll do a lot in this class is load some CSV data using the `read_csv()` function that the tidyverse provides. Follow along here: https://r4ds.hadley.nz/data-import and put the code below that loads the students.csv file from the URL provided:
 
 ```{r}
+students <- read_csv("https://pos.it/r4ds-students-csv", na = c("N/A", ""))
+#> # A tibble: 6 × 5
+#>   `Student ID` `Full Name`      favourite.food     mealPlan            AGE  
+#>          <dbl> <chr>            <chr>              <chr>               <chr>
+#> 1            1 Sunil Huffmann   Strawberry yoghurt Lunch only          4    
+#> 2            2 Barclay Lynn     French fries       Lunch only          5    
+#> 3            3 Jayendra Lyne    <NA>               Breakfast and lunch 7    
+#> 4            4 Leon Rossini     Anchovies          Lunch only          <NA> 
+#> 5            5 Chidiegwu Dunkel Pizza              Breakfast and lunch five 
+#> 6            6 Güvenç Attila    Ice cream          Lunch only          6
+students <- students |>
+  janitor::clean_names() |>
+  mutate(
+    meal_plan = factor(meal_plan),
+    age = parse_number(if_else(age == "five", "5", age))
+  )
 
+students
 ```
 
 You're done with code once you hit Section 7.2.1 on the page, but if you had trouble with or questions about any of this, please describe them below:
 
-
-
+Not sure if I did the renaming part right, I kept copying over from the code on the website and it gave me error messages. But, when I deleted the "rename" code, the table comes out with the correct labels. Not sure why that's the case.
 
 IMPORTANT: Be sure to save your work (Cmd-S or Ctrl-S will do it) 
 and then switch over to GitHub Desktop and add, commit and push this file to GitHub. Contact me or Matt if you're having trouble.
