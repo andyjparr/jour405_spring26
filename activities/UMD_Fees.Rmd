@@ -28,13 +28,31 @@ umd_fees_pct <- umd_fees |> mutate(pct_change = (`Fall 2024`- `Fall 2021`)/`Fall
 ```
 
 
+```{r}
+umd_fees_pct_2524 <- umd_fees |> mutate(pct_change = (`Fall 2025`- `Fall 2024`)/`Fall 2024` * 100)
+```
 
 ### Task 4: Describe our results
 
 Write a few sentences about what you found in the data. What's the story here?
 
-
+The largest percent change from 2024 to 2025 came in student activities, which had a 14.6% increase in fees. However, when compared to the largest percent change in spending from 2021 to 2025, the amount of spending on student sustainability has more than doubled since 2021 despite not having an increase from 2024 to 2025. The biggest story seen in this data is that UMD seems to be content with its spending on student sustainability and is now trying to spread money to other categories like student activities and the shuttle bus.
 
 
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
+
+```{r}
+
+comp <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/class_composition.csv")
+
+comp |>
+  summarize(
+    mean_first = mean(first_year),
+    mean_soph = mean(sophomore),
+    mean_junior = mean(junior),
+    mean_senior = mean(senior),
+    mean_grad = mean(grad)
+  )
+```
+
