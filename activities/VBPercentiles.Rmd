@@ -37,7 +37,9 @@ team_aces |> mutate(percentile = ntile(total_aces, 100))
 
 Write a couple of sentences that puts Maryland into context with the other teams in the dataset. You can do some Internet research to help with this.
 
+Compared to other NCAA volleyball teams for the 2024 season, Maryland was either just as good or better than recording aces than 95% of schools. Creighton and Merrimack are with Maryland in the 95th percentile, which appears to contain anywhere from 220 to 224 aces in the season.
 
+That said, despite excelling in aces, the team still finished just 14-17 with a 5-15 record in conference play, failing to qualify for the NCAA tournament. UTEP, the top team in aces for the season, was bounced in the opening round of the tournament. As nice as it is to be excellent in this category and secure points, teams must do more than just score off serves to be an elite NCAA program.
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
 
