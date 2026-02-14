@@ -68,3 +68,26 @@ Ocean City, which has Maryland's highest rate of violent and property crimes in 
 ### Task 9: Save Your Work and Put it on GitHub
 
 Save this notebook, then commit it to your local repository. Push the changes to your GitHub repository and submit the URL for this file in ELMS.
+
+###Task 10: HW5 (Percentiles)
+
+Using the 2020 violent crime rate, calculate the percentiles using `ntile()`. Save the results to a new dataframe called `md_cities_percentiles`. How many cities are above the 90th percentile?
+
+```{r}
+md_cities_percentiles <- md_cities_rates |> mutate(percentile = ntile(violent_rate_2020, 100))
+
+#11 cities are at or above the 90th percentile
+```
+
+Calculate the Interquartile Range of the 2020 violent crime rate using `summarize()` and R's `IQR()` function. The syntax is similar to how `mean()` works.
+
+```{r}
+md_cities_rates |> summarize(iqr_violent_2020 = IQR(violent_rate_2020))
+
+#The IQR for 2020 violent crime rate is about 4.20
+```
+
+
+Do the results change your best story idea from the previous assignment? Why or why not?
+
+Not really, the story I was focused on centered around populations and overall trends in rate vs. population, with a specific focus on Ocean City's high crime rate (the city in the 100th percentile).
