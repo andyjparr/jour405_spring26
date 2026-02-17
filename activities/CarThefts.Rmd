@@ -32,7 +32,7 @@ car_thefts |>
   ggplot() + 
   geom_histogram(aes(x = count), binwidth = 2) +
   geom_vline(aes(xintercept = mean(count)), color = "red", linetype = "dashed", size = 1) +
-  geom_vline(aes(xintercept = mean(count) - sd(count)), color = "blue", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = mean(count) - sd(count)), color = "chartreuse", linetype = "dashed", size = 1) +
   geom_vline(aes(xintercept = mean(count) + sd(count)), color = "blue", linetype = "dashed", size = 1)
 ```
 
@@ -45,6 +45,10 @@ car_thefts |>
 ### Task 6: Describe your results
 
 Is the distribution normal or skewed in one direction? Write a sentence in which you describe the range of the data covered by one standard deviation from the mean on both sides - how much of the data falls in that range?
+
+This distribution looks fairly normal... I'd call it about 70% normal. While the majority of data is concentrated around the mean and the peak is near the center, the edges of the data have a wider range in height. The lower end of the data has a higher peak than the higher end of the data, making look like it gives a slight skew to the left despite being a pretty normal distribution.
+
+As far as the standard deviation part, assuming this is normal, 68% of the data should lie within one standard deviation on either side of the mean.
 
 
 
