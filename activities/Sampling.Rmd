@@ -63,6 +63,6 @@ population_stats
 
 Compare the means and standard deviations. Are they similar? Go back and re-run the sampling and statistics calculations with a smaller sample size. How do the results change?
 
-The mean and standard deviations are very close between the population and the sample. The mean is a tiny bit higher on the population and the standard deviation is a bit higher on the sample. When the sample size decreased to 20, the mean stayed about the same, (actually a bit closer to the population), but the standard deviation got a bit higher. Then, when I did the final run with a sample size of five, the mean fell down lower and the standard deviation was its highest so far.
+The mean and standard deviations are very close between the population and the sample. The mean is a tiny bit higher on the population and the standard deviation is a bit higher on the sample. When the sample size decreased to 20, the mean stayed about the same, (actually a bit closer to the population), but the standard deviation got a bit higher. Then, when I did the final run with a sample size of five, the mean fell down lower and the standard deviation was its highest so far. 
 
 When finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
