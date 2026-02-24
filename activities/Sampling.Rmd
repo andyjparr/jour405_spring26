@@ -6,23 +6,63 @@ Follow along with the demo to learn how to sample data from a population using R
 
 ### Task 1: Load the tidyverse
 
+```{r}
+library(tidyverse)
+```
 
 ### Task 2: Load 1,000 rows of data with the ages of people from 18-80
+
+```{r}
+set.seed(42)
+
+population <- tibble(
+  age = sample(18:80, 1000, replace = TRUE)
+)
+
+population
+```
 
 
 ### Task 3: Sample 100 rows of data from the dataset
 
+```{r}
+sampled_data <- population |> 
+  slice_sample(n = 5)
+
+sampled_data
+```
+
 
 ### Task 4: Calculate the mean age and standard deviation of the sample
 
+```{r}
+sample_stats <- sampled_data |>
+  summarise(
+    mean_age = mean(age),
+    sd_age = sd(age)
+  )
+
+sample_stats
+```
+
 
 ### Task 5: Calculate the mean age and standard deviation of the population
+
+```{r}
+population_stats <- population |>
+  summarise(
+    mean_age = mean(age),
+    sd_age = sd(age)
+  )
+
+population_stats
+```
 
 
 ### Task 6: Compare the sample and population statistics
 
 Compare the means and standard deviations. Are they similar? Go back and re-run the sampling and statistics calculations with a smaller sample size. How do the results change?
 
-
+The mean and standard deviations are very close between the population and the sample. The mean is a tiny bit higher on the population and the standard deviation is a bit higher on the sample. When the sample size decreased to 20, the mean stayed about the same, (actually a bit closer to the population), but the standard deviation got a bit higher. Then, when I did the final run with a sample size of five, the mean fell down lower and the standard deviation was its highest so far.
 
 When finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
