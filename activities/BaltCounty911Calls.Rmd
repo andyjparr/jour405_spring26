@@ -74,7 +74,7 @@ summary(daily_calls$call_count)
 
 Let's visualize the time series of daily calls. What patterns do you see? If you had to draw horizontal lines that would highlight unusual days, where would those lines be?
 
-ANSWER HERE
+There's a lot of up and down from day to day to keep the average amount of calls around 10. That said, it looks like the call count was slightly higher in summer months, but the points that catch my eye and should be inspected are the very high peak in early October, then also the low dips at the end of Jan 2023 and June 2022. There also seems to be a high-ish peak at New Year's, which makes sense.
 
 ```{r daily-calls-plot}
 # Plot daily call volume
@@ -137,7 +137,7 @@ unusual_days |>
 
 Let's visualize these unusual days in the context of the full dataset. How do they differ from your answer on Task 3?
 
-ANSWER HERE
+It flagged much more of the dates than I thought of as outliers in task three. I called out two unusually high peaks and two unusually low dips, while this graph points out 11 peaks as being high and seven as being low.
 
 ```{r plot-unusual-days}
 # Create a clean factor for the plot legend
@@ -207,7 +207,7 @@ ggplot(dow_summary, aes(x = day_of_week, y = avg_calls)) +
 
 We can also calculate z-scores that account for the day of the week pattern. How would you describe the day with the highest z-score without using the term "z-score"?
 
-ANSWER HERE
+The average amount of calls received on Tuesdays in 2022 was 10.35, but on Tuesday 10/4/22, there were 23 calls, an amount way over the range of expected amounts.
 
 ```{r day-of-week-z-scores}
 # Calculate day-of-week adjusted z-scores
@@ -283,6 +283,8 @@ ggplot(daily_calls, aes(x = date)) +
 
 For the most unusual days, we might want to check if they coincide with significant events:
 
+1/1/23 (New Year's Day) was tied for the second-highest standard deviation in the data.
+
 ```{r investigate-top-outliers}
 # Get the top 10 most unusual days
 top_outliers <- daily_calls |>
@@ -298,5 +300,7 @@ top_outliers |> kable(digits = 2)
 
 Based on our z-score analysis, what are some potential angles for reporting? What would your next steps be and what would you tell an editor about your findings?
 
-ANSWER HERE
+Some possible stories: New Year's Day experienced one of the most unusually high amounts of calls, were there any spots that had an extra high concentration for one area/party? Look into the addresses from that day and see if multiple are from the same spot or very close by, is there a larger picture in play there
+
+What the hell happened on Oct. 4? Look into the addressed, call times and see if there's a bigger pattern in play there too.
 
