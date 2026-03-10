@@ -1,7 +1,7 @@
 ---
 title: "JOUR405: Statistics for Journalists"
 subtitle: "Midterm Exam"
-name: "YOUR NAME HERE"
+name: "Andy Parr"
 ---
 
 ```{r setup, include=FALSE}
