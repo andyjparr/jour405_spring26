@@ -1,0 +1,188 @@
+---
+title: "Hypothesis Testing & Effect Size"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## Did Community Policing Actually Improve Response Times?
+
+The city of Westbrook implemented a new community policing program in January. The police chief claims the program has improved emergency response times. Before the program, the average response time was **8.2 minutes** with a standard deviation of **1.5 minutes**. You've collected data from 20 randomly selected emergency calls after the program started.
+
+Your editor wants to know two things: Is the improvement real? And is it big enough to matter?
+
+### Task 1: Load the tidyverse
+
+```{r}
+library(tidyverse)
+```
+
+### Task 2: Set up the data and the hypotheses (2 points)
+
+Before we run any tests, we need to state our hypotheses. The null hypothesis is what we assume to be true until we have evidence otherwise — like "innocent until proven guilty." Fill in the REPLACE_ME values.
+
+**Null Hypothesis (H₀):** There is no significant difference, (no change in response time)
+
+**Alternative Hypothesis (H₁):** There is a significant difference, (a change in response times)
+
+```{r}
+# Response times (in minutes) after the community policing program
+response_times <- c(
+  7.8, 8.1, 7.5, 7.9, 8.3,
+  7.6, 7.4, 8.0, 7.7, 7.8,
+  8.2, 7.3, 7.9, 7.5, 8.1,
+  7.6, 7.8, 7.4, 7.7, 7.9
+)
+
+# Known baseline (before the program)
+baseline_mean <- 8.2
+baseline_sd <- 1.5
+
+# Create a tibble
+response_data <- tibble(
+  call_number = 1:20,
+  response_time = response_times
+)
+
+response_data
+```
+
+### Task 3: Calculate summary statistics (1 point)
+
+Let's see what the new response times look like. Replace the REPLACE_ME values.
+
+```{r}
+summary_stats <- response_data |>
+  summarize(
+    sample_size = n(),
+    sample_mean = mean(response_time),
+    sample_sd = sd(response_time),
+    standard_error = sample_sd / sqrt(sample_size)
+  )
+
+summary_stats
+```
+
+**Answer this question:** The sample mean is lower than the baseline of 8.2 minutes. How much lower? Does that seem like a meaningful improvement to you, just based on the numbers? What would you want to know before deciding?
+
+It is only a bit lower, going from 8.2 minutes to 7.8 minutes. That said, any decrease in response time rate is an important one in this situation, the faster responses can be, the better. Additionally, the standard deviation is much lower, meaning the new response times are much tighter to the mean and variation has decreased. However, I would like to know the p-value before making a final decision to see how reliable and significant it is.
+
+### Task 4: Perform a one-sample t-test (2 points)
+
+Now we formally test the police chief's claim. Since we're testing whether response times *decreased*, we use a one-sided test (`alternative = "less"`). Replace the REPLACE_ME with the baseline mean we're comparing against.
+
+```{r}
+# Set our significance level
+alpha <- 0.05
+
+# Perform the t-test
+t_test_result <- t.test(
+  response_data$response_time,
+  mu = 8.2,
+  alternative = "less"
+)
+
+t_test_result
+```
+
+### Task 5: Interpret the t-test results (2 points)
+
+Let's pull out the key numbers. Look at the p-value: is it less than our alpha of 0.05?
+
+```{r}
+# Extract key values
+p_value <- t_test_result$p.value
+
+results <- tibble(
+  `Baseline mean` = paste(baseline_mean, "minutes"),
+  `New mean` = paste(round(summary_stats$sample_mean, 2), "minutes"),
+  `Difference` = paste(round(baseline_mean - summary_stats$sample_mean, 2), "minutes"),
+  `p-value` = round(p_value, 6),
+  `Significant?` = if_else(p_value < alpha, "Yes - reject null hypothesis", "No - fail to reject")
+)
+
+results
+```
+
+**Answer this question:** Based on the p-value, can we reject the null hypothesis? What does this tell the police chief — and what does it NOT tell him?
+
+Yes, the null hypothesis is rejected based on the p-value. This means that we can say there was a change, but we can't definitively say if response times went up or down, just that they changed.
+
+### Task 6: Visualize the results
+
+```{r}
+ggplot(response_data, aes(x = response_time)) +
+  geom_histogram(binwidth = 0.2, fill = "steelblue", color = "white", alpha = 0.7) +
+  geom_vline(xintercept = baseline_mean, color = "red", linetype = "dashed", size = 1.2) +
+  geom_vline(xintercept = summary_stats$sample_mean, color = "darkgreen", size = 1.2) +
+  annotate("text", x = baseline_mean + 0.05, y = 4,
+           label = paste("Baseline:", baseline_mean),
+           color = "red", hjust = 0, fontface = "bold") +
+  annotate("text", x = summary_stats$sample_mean - 0.05, y = 3.5,
+           label = paste("New Mean:", round(summary_stats$sample_mean, 2)),
+           color = "darkgreen", hjust = 1, fontface = "bold") +
+  labs(
+    title = "Emergency Response Times: Before vs. After Community Policing",
+    subtitle = paste0("p-value = ", round(p_value, 6)),
+    x = "Response Time (minutes)",
+    y = "Number of Calls"
+  ) +
+  theme_minimal()
+```
+
+### Task 7: Calculate the effect size (3 points)
+
+The t-test told us the improvement is statistically significant — it's real, not due to chance. But is it *meaningful*? That's what effect size measures. We'll calculate **Cohen's d**, which tells us how large the difference is in standard deviation units.
+
+The formula is: d = (baseline mean - sample mean) / baseline standard deviation
+
+Replace the REPLACE_ME values.
+
+```{r}
+effect_size <- (baseline_mean - summary_stats$sample_mean) / baseline_sd
+
+effect_size_interpretation <- case_when(
+  abs(effect_size) < 0.2 ~ "Negligible",
+  abs(effect_size) < 0.5 ~ "Small",
+  abs(effect_size) < 0.8 ~ "Medium",
+  TRUE ~ "Large"
+)
+
+tibble(
+  `Cohen's d` = round(effect_size, 3),
+  `Interpretation` = effect_size_interpretation,
+  `Difference in minutes` = round(baseline_mean - summary_stats$sample_mean, 2),
+  `Difference in seconds` = round((baseline_mean - summary_stats$sample_mean) * 60, 0)
+)
+```
+
+**Answer this question:** The result is statistically significant, but the effect size is small. In practical terms, the improvement is about 25 seconds per call. The police chief is claiming success. Would you write a story saying the program works? How would you frame the findings honestly — acknowledging both that the improvement is real AND that it's small?
+
+I would say that the program is proven to work, but also emphasize that the change is a small one. While every second matters in these situations, a 25 second decrease here takes us from a little over eight minutes to a little under eight minutes, it's not like going from one minute to 35 seconds.
+
+### Task 8: The journalist's framework (5 points)
+
+The videos you watched describe two questions you need to ask about any statistical result:
+
+1. **Is it statistically significant?** (Is the result unlikely to be due to chance?)
+2. **Is it meaningfully significant?** (Is the effect large enough to matter?)
+
+Apply this framework to the community policing data: Yes, statistically significant. No, the effect is not large enough to warrant investment.
+
+**Question 1:** Write 1-2 sentences answering whether the result is statistically significant and how you know.
+
+Yes, it's statistically significant because the p-value is very near zero, well below the 0.05 threshold for statistical significance.
+
+**Question 2:** Write 1-2 sentences answering whether the result is meaningfully significant. Consider: the program cost the city $2 million to implement. Is a 25-second improvement in response times worth that investment? What context would you need to answer that question?
+
+Initially, I would lean no because $2 million dollars to improve an 8.2 minute response time by 25 seconds feels like a giant over-investment. That said, if data shows that those extra 25 seconds would actually make a giant difference in terms of helping people, maybe it's worth it.
+
+**Question 3:** Write a headline and a 2-3 sentence lede for a story about these findings. Your text should accurately reflect both the statistical significance and the effect size — don't let the police chief's framing drive the story if the data tells a more nuanced one.
+
+Westbrook's new policing system works... just not as much as you might think
+
+Weekbrook's police department launched a new policing system in January, designed to improve response times. Before the system, the average response time was 8.2 minutes. The new system, a $2 million investment for the department, is proven to have made a change, lowering the new rate by about 25 seconds.
+
+
+When you are finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
