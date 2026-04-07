@@ -5,7 +5,7 @@ date: "2025-04-01"
 
 ```{r setup, include=FALSE}
 library(knitr)
-install.packages("kableExtra")
+#install.packages("kableExtra")
 library(kableExtra)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
@@ -93,11 +93,11 @@ ggplot(nonvoters_data, aes(x = weight)) +
 **Questions:**
 
 1. What is the range of weights in this dataset?
-
+0.2298 to 3.0386
 2. What does it mean when a respondent has a weight of 0.23? What about 3.04?
-
+A lower weight means their response doesn't have as much sway on the final results, unlike respondents with a higher weight. In this case, .23 counts less towards the results than 3.04
 3. Why might some respondents be weighted more heavily than others?
-
+The lower the weight, the better-represented that individual is within their demographic for the specific dataset. If an individual is weighted higher, it means their demographic is under represented so their response gets more weight to try and balance numbers out
 # Exercise 1: Voter Categories and Weighting
 
 First, let's look at how many people fall into each voting category in our sample.
@@ -233,6 +233,12 @@ kable(comparison, digits = 1, caption = "Difference Between Weighted and Unweigh
 
 1. Which voter category shows the biggest difference between weighted and unweighted results?
 
+"Rarely/never" has the largest difference between weighted and unweighted results
+
 2. How might these differences affect reporting on likely voter turnout?
 
+People in the "rarely/never" category might be overvalued if their responses are not weighted, as the "yes" category dropped by 3.6% after the weighting system was put into effect
+
 3. Why do you think these differences exist? What does this tell us about who might be over or under-represented in the sample?
+
+They exist because these polls typically rely on people answering calls or taking initiative. Due to this fact of the polling system, it can usually lead to younger demographics or ones in rural areas not responding, either due to a lack of urgency for filling out these surveys or a lack of ability to get the chance
