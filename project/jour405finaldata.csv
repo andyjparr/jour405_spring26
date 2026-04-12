@@ -1,0 +1,613 @@
+Team,Year,Games Played,Goals Scored
+Washington,2006,82,237
+Washington,2007,82,235
+Washington,2008,82,242
+Washington,2009,82,272
+Washington,2010,82,318
+Washington,2011,82,224
+Washington,2012,82,222
+Washington,2013,48,149
+Washington,2014,82,235
+Washington,2015,82,242
+Washington,2016,82,252
+Washington,2017,82,263
+Washington,2018,82,259
+Washington,2019,82,278
+Washington,2020,69,240
+Washington,2021,56,191
+Washington,2022,82,275
+Washington,2023,82,255
+Washington,2024,82,220
+Washington,2025,82,288
+Pittsburgh,2006,82,244
+Pittsburgh,2007,82,277
+Pittsburgh,2008,82,247
+Pittsburgh,2009,82,264
+Pittsburgh,2010,82,257
+Pittsburgh,2011,82,238
+Pittsburgh,2012,82,282
+Pittsburgh,2013,48,165
+Pittsburgh,2014,82,249
+Pittsburgh,2015,82,221
+Pittsburgh,2016,82,245
+Pittsburgh,2017,82,282
+Pittsburgh,2018,82,272
+Pittsburgh,2019,82,273
+Pittsburgh,2020,69,224
+Pittsburgh,2021,56,196
+Pittsburgh,2022,82,272
+Pittsburgh,2023,82,262
+Pittsburgh,2024,82,255
+Pittsburgh,2025,82,243
+NY Rangers,2006,82,257
+NY Rangers,2007,82,242
+NY Rangers,2008,82,213
+NY Rangers,2009,82,210
+NY Rangers,2010,82,222
+NY Rangers,2011,82,233
+NY Rangers,2012,82,226
+NY Rangers,2013,48,130
+NY Rangers,2014,82,218
+NY Rangers,2015,82,252
+NY Rangers,2016,82,236
+NY Rangers,2017,82,256
+NY Rangers,2018,82,231
+NY Rangers,2019,82,227
+NY Rangers,2020,70,234
+NY Rangers,2021,56,177
+NY Rangers,2022,82,254
+NY Rangers,2023,82,277
+NY Rangers,2024,82,282
+NY Rangers,2025,82,256
+NY Islanders,2006,82,230
+NY Islanders,2007,82,248
+NY Islanders,2008,82,194
+NY Islanders,2009,82,201
+NY Islanders,2010,82,222
+NY Islanders,2011,82,229
+NY Islanders,2012,82,203
+NY Islanders,2013,48,139
+NY Islanders,2014,82,225
+NY Islanders,2015,82,252
+NY Islanders,2016,82,232
+NY Islanders,2017,82,241
+NY Islanders,2018,82,264
+NY Islanders,2019,82,228
+NY Islanders,2020,68,192
+NY Islanders,2021,56,156
+NY Islanders,2022,82,231
+NY Islanders,2023,82,243
+NY Islanders,2024,82,246
+NY Islanders,2025,82,224
+Philadephia,2006,82,267
+Philadephia,2007,82,214
+Philadephia,2008,82,248
+Philadephia,2009,82,264
+Philadephia,2010,82,236
+Philadephia,2011,82,259
+Philadephia,2012,82,264
+Philadephia,2013,48,133
+Philadephia,2014,82,236
+Philadephia,2015,82,215
+Philadephia,2016,82,214
+Philadephia,2017,82,219
+Philadephia,2018,82,251
+Philadephia,2019,82,244
+Philadephia,2020,69,232
+Philadephia,2021,56,163
+Philadephia,2022,82,211
+Philadephia,2023,82,222
+Philadephia,2024,82,235
+Philadephia,2025,82,238
+Carolina,2006,82,294
+Carolina,2007,82,241
+Carolina,2008,82,252
+Carolina,2009,82,239
+Carolina,2010,82,230
+Carolina,2011,82,236
+Carolina,2012,82,213
+Carolina,2013,48,128
+Carolina,2014,82,207
+Carolina,2015,82,188
+Carolina,2016,82,198
+Carolina,2017,82,215
+Carolina,2018,82,228
+Carolina,2019,82,245
+Carolina,2020,68,222
+Carolina,2021,56,179
+Carolina,2022,82,278
+Carolina,2023,82,266
+Carolina,2024,82,279
+Carolina,2025,82,266
+New Jersey,2006,82,242
+New Jersey,2007,82,216
+New Jersey,2008,82,206
+New Jersey,2009,82,244
+New Jersey,2010,82,222
+New Jersey,2011,82,174
+New Jersey,2012,82,228
+New Jersey,2013,48,112
+New Jersey,2014,82,197
+New Jersey,2015,82,181
+New Jersey,2016,82,184
+New Jersey,2017,82,183
+New Jersey,2018,82,248
+New Jersey,2019,82,222
+New Jersey,2020,69,189
+New Jersey,2021,56,145
+New Jersey,2022,82,248
+New Jersey,2023,82,291
+New Jersey,2024,82,264
+New Jersey,2025,82,242
+Columbus,2006,82,223
+Columbus,2007,82,201
+Columbus,2008,82,193
+Columbus,2009,82,226
+Columbus,2010,82,216
+Columbus,2011,82,215
+Columbus,2012,82,202
+Columbus,2013,48,120
+Columbus,2014,82,231
+Columbus,2015,82,236
+Columbus,2016,82,219
+Columbus,2017,82,249
+Columbus,2018,82,242
+Columbus,2019,82,258
+Columbus,2020,70,180
+Columbus,2021,56,137
+Columbus,2022,82,262
+Columbus,2023,82,214
+Columbus,2024,82,237
+Columbus,2025,82,273
+Boston,2006,82,230
+Boston,2007,82,219
+Boston,2008,82,212
+Boston,2009,82,274
+Boston,2010,82,206
+Boston,2011,82,246
+Boston,2012,82,269
+Boston,2013,48,131
+Boston,2014,82,261
+Boston,2015,82,213
+Boston,2016,82,240
+Boston,2017,82,234
+Boston,2018,82,270
+Boston,2019,82,259
+Boston,2020,70,227
+Boston,2021,56,168
+Boston,2022,82,255
+Boston,2023,82,305
+Boston,2024,82,267
+Boston,2025,82,222
+Buffalo,2006,82,281
+Buffalo,2007,82,308
+Buffalo,2008,82,255
+Buffalo,2009,82,250
+Buffalo,2010,82,235
+Buffalo,2011,82,245
+Buffalo,2012,82,218
+Buffalo,2013,48,125
+Buffalo,2014,82,157
+Buffalo,2015,82,161
+Buffalo,2016,82,201
+Buffalo,2017,82,201
+Buffalo,2018,82,199
+Buffalo,2019,82,226
+Buffalo,2020,69,195
+Buffalo,2021,56,138
+Buffalo,2022,82,232
+Buffalo,2023,82,296
+Buffalo,2024,82,246
+Buffalo,2025,82,269
+Detroit,2006,82,305
+Detroit,2007,82,254
+Detroit,2008,82,257
+Detroit,2009,82,295
+Detroit,2010,82,229
+Detroit,2011,82,261
+Detroit,2012,82,248
+Detroit,2013,48,124
+Detroit,2014,82,222
+Detroit,2015,82,235
+Detroit,2016,82,211
+Detroit,2017,82,207
+Detroit,2018,82,217
+Detroit,2019,82,227
+Detroit,2020,71,145
+Detroit,2021,56,127
+Detroit,2022,82,230
+Detroit,2023,82,240
+Detroit,2024,82,278
+Detroit,2025,82,238
+Montreal,2006,82,243
+Montreal,2007,82,245
+Montreal,2008,82,262
+Montreal,2009,82,248
+Montreal,2010,82,217
+Montreal,2011,82,216
+Montreal,2012,82,212
+Montreal,2013,48,149
+Montreal,2014,82,215
+Montreal,2015,82,221
+Montreal,2016,82,221
+Montreal,2017,82,226
+Montreal,2018,82,209
+Montreal,2019,82,249
+Montreal,2020,71,212
+Montreal,2021,56,159
+Montreal,2022,82,221
+Montreal,2023,82,232
+Montreal,2024,82,236
+Montreal,2025,82,245
+Toronto,2006,82,257
+Toronto,2007,82,258
+Toronto,2008,82,231
+Toronto,2009,82,250
+Toronto,2010,82,214
+Toronto,2011,82,218
+Toronto,2012,82,231
+Toronto,2013,48,145
+Toronto,2014,82,231
+Toronto,2015,82,211
+Toronto,2016,82,198
+Toronto,2017,82,251
+Toronto,2018,82,277
+Toronto,2019,82,286
+Toronto,2020,70,238
+Toronto,2021,56,187
+Toronto,2022,82,315
+Toronto,2023,82,279
+Toronto,2024,82,303
+Toronto,2025,82,268
+Ottawa,2006,82,314
+Ottawa,2007,82,288
+Ottawa,2008,82,261
+Ottawa,2009,82,217
+Ottawa,2010,82,225
+Ottawa,2011,82,192
+Ottawa,2012,82,249
+Ottawa,2013,48,116
+Ottawa,2014,82,236
+Ottawa,2015,82,238
+Ottawa,2016,82,236
+Ottawa,2017,82,212
+Ottawa,2018,82,221
+Ottawa,2019,82,242
+Ottawa,2020,71,191
+Ottawa,2021,56,157
+Ottawa,2022,82,227
+Ottawa,2023,82,261
+Ottawa,2024,82,255
+Ottawa,2025,82,243
+Tampa Bay,2006,82,252
+Tampa Bay,2007,82,253
+Tampa Bay,2008,82,223
+Tampa Bay,2009,82,210
+Tampa Bay,2010,82,217
+Tampa Bay,2011,82,247
+Tampa Bay,2012,82,235
+Tampa Bay,2013,48,148
+Tampa Bay,2014,82,240
+Tampa Bay,2015,82,262
+Tampa Bay,2016,82,227
+Tampa Bay,2017,82,234
+Tampa Bay,2018,82,296
+Tampa Bay,2019,82,325
+Tampa Bay,2020,70,245
+Tampa Bay,2021,56,181
+Tampa Bay,2022,82,287
+Tampa Bay,2023,82,283
+Tampa Bay,2024,82,291
+Tampa Bay,2025,82,294
+Florida,2006,82,240
+Florida,2007,82,247
+Florida,2008,82,216
+Florida,2009,82,234
+Florida,2010,82,208
+Florida,2011,82,195
+Florida,2012,82,203
+Florida,2013,48,112
+Florida,2014,82,196
+Florida,2015,82,206
+Florida,2016,82,239
+Florida,2017,82,210
+Florida,2018,82,248
+Florida,2019,82,267
+Florida,2020,69,231
+Florida,2021,56,189
+Florida,2022,82,340
+Florida,2023,82,290
+Florida,2024,82,268
+Florida,2025,82,252
+Chicago,2006,82,211
+Chicago,2007,82,201
+Chicago,2008,82,239
+Chicago,2009,82,264
+Chicago,2010,82,271
+Chicago,2011,82,258
+Chicago,2012,82,248
+Chicago,2013,48,155
+Chicago,2014,82,267
+Chicago,2015,82,229
+Chicago,2016,82,235
+Chicago,2017,82,244
+Chicago,2018,82,229
+Chicago,2019,82,270
+Chicago,2020,70,212
+Chicago,2021,56,161
+Chicago,2022,82,219
+Chicago,2023,82,204
+Chicago,2024,82,179
+Chicago,2025,82,226
+Colorado,2006,82,283
+Colorado,2007,82,272
+Colorado,2008,82,231
+Colorado,2009,82,199
+Colorado,2010,82,244
+Colorado,2011,82,227
+Colorado,2012,82,208
+Colorado,2013,48,116
+Colorado,2014,82,250
+Colorado,2015,82,219
+Colorado,2016,82,216
+Colorado,2017,82,166
+Colorado,2018,82,257
+Colorado,2019,82,260
+Colorado,2020,70,237
+Colorado,2021,56,197
+Colorado,2022,82,312
+Colorado,2023,82,280
+Colorado,2024,82,304
+Colorado,2025,82,277
+Dallas,2006,82,265
+Dallas,2007,82,226
+Dallas,2008,82,242
+Dallas,2009,82,230
+Dallas,2010,82,237
+Dallas,2011,82,227
+Dallas,2012,82,211
+Dallas,2013,48,130
+Dallas,2014,82,235
+Dallas,2015,82,261
+Dallas,2016,82,267
+Dallas,2017,82,223
+Dallas,2018,82,235
+Dallas,2019,82,210
+Dallas,2020,69,180
+Dallas,2021,56,158
+Dallas,2022,82,238
+Dallas,2023,82,285
+Dallas,2024,82,298
+Dallas,2025,82,277
+Minnesota,2006,82,231
+Minnesota,2007,82,235
+Minnesota,2008,82,223
+Minnesota,2009,82,219
+Minnesota,2010,82,219
+Minnesota,2011,82,206
+Minnesota,2012,82,177
+Minnesota,2013,48,122
+Minnesota,2014,82,207
+Minnesota,2015,82,231
+Minnesota,2016,82,216
+Minnesota,2017,82,266
+Minnesota,2018,82,253
+Minnesota,2019,82,211
+Minnesota,2020,69,220
+Minnesota,2021,56,181
+Minnesota,2022,82,310
+Minnesota,2023,82,246
+Minnesota,2024,82,251
+Minnesota,2025,82,228
+Nashville,2006,82,259
+Nashville,2007,82,272
+Nashville,2008,82,230
+Nashville,2009,82,213
+Nashville,2010,82,225
+Nashville,2011,82,219
+Nashville,2012,82,237
+Nashville,2013,48,111
+Nashville,2014,82,216
+Nashville,2015,82,232
+Nashville,2016,82,228
+Nashville,2017,82,240
+Nashville,2018,82,267
+Nashville,2019,82,240
+Nashville,2020,69,215
+Nashville,2021,56,156
+Nashville,2022,82,266
+Nashville,2023,82,229
+Nashville,2024,82,269
+Nashville,2025,82,214
+St. Louis,2006,82,197
+St. Louis,2007,82,214
+St. Louis,2008,82,205
+St. Louis,2009,82,233
+St. Louis,2010,82,225
+St. Louis,2011,82,240
+St. Louis,2012,82,210
+St. Louis,2013,48,129
+St. Louis,2014,82,248
+St. Louis,2015,82,248
+St. Louis,2016,82,224
+St. Louis,2017,82,235
+St. Louis,2018,82,226
+St. Louis,2019,82,247
+St. Louis,2020,71,225
+St. Louis,2021,56,169
+St. Louis,2022,82,311
+St. Louis,2023,82,263
+St. Louis,2024,82,239
+St. Louis,2025,82,254
+Arizona,2006,82,246
+Arizona,2007,82,216
+Arizona,2008,82,214
+Arizona,2009,82,208
+Arizona,2010,82,225
+Arizona,2011,82,231
+Arizona,2012,82,216
+Arizona,2013,48,125
+Arizona,2014,82,216
+Arizona,2015,82,170
+Arizona,2016,82,209
+Arizona,2017,82,197
+Arizona,2018,82,208
+Arizona,2019,82,213
+Arizona,2020,70,195
+Arizona,2021,56,153
+Arizona,2022,82,207
+Arizona,2023,82,228
+Arizona,2024,82,256
+Utah,2025,82,241
+Atlanta,2006,82,281
+Atlanta,2007,82,246
+Atlanta,2008,82,216
+Atlanta,2009,82,257
+Atlanta,2010,82,234
+Atlanta,2011,82,223
+Winnipeg,2012,82,225
+Winnipeg,2013,48,128
+Winnipeg,2014,82,227
+Winnipeg,2015,82,230
+Winnipeg,2016,82,215
+Winnipeg,2017,82,249
+Winnipeg,2018,82,277
+Winnipeg,2019,82,272
+Winnipeg,2020,71,216
+Winnipeg,2021,56,170
+Winnipeg,2022,82,252
+Winnipeg,2023,82,247
+Winnipeg,2024,82,259
+Winnipeg,2025,82,277
+Anaheim,2006,82,254
+Anaheim,2007,82,258
+Anaheim,2008,82,205
+Anaheim,2009,82,245
+Anaheim,2010,82,238
+Anaheim,2011,82,239
+Anaheim,2012,82,204
+Anaheim,2013,48,140
+Anaheim,2014,82,266
+Anaheim,2015,82,236
+Anaheim,2016,82,218
+Anaheim,2017,82,223
+Anaheim,2018,82,235
+Anaheim,2019,82,199
+Anaheim,2020,71,187
+Anaheim,2021,56,126
+Anaheim,2022,82,232
+Anaheim,2023,82,209
+Anaheim,2024,82,204
+Anaheim,2025,82,221
+Calgary,2006,82,218
+Calgary,2007,82,258
+Calgary,2008,82,229
+Calgary,2009,82,254
+Calgary,2010,82,204
+Calgary,2011,82,250
+Calgary,2012,82,202
+Calgary,2013,48,128
+Calgary,2014,82,209
+Calgary,2015,82,241
+Calgary,2016,82,231
+Calgary,2017,82,226
+Calgary,2018,82,218
+Calgary,2019,82,289
+Calgary,2020,70,210
+Calgary,2021,56,156
+Calgary,2022,82,293
+Calgary,2023,82,260
+Calgary,2024,82,253
+Calgary,2025,82,225
+Edmonton,2006,82,256
+Edmonton,2007,82,195
+Edmonton,2008,82,235
+Edmonton,2009,82,234
+Edmonton,2010,82,214
+Edmonton,2011,82,193
+Edmonton,2012,82,212
+Edmonton,2013,48,125
+Edmonton,2014,82,203
+Edmonton,2015,82,198
+Edmonton,2016,82,203
+Edmonton,2017,82,247
+Edmonton,2018,82,234
+Edmonton,2019,82,232
+Edmonton,2020,71,225
+Edmonton,2021,56,183
+Edmonton,2022,82,290
+Edmonton,2023,82,325
+Edmonton,2024,82,294
+Edmonton,2025,82,259
+Los Angeles,2006,82,249
+Los Angeles,2007,82,227
+Los Angeles,2008,82,231
+Los Angeles,2009,82,207
+Los Angeles,2010,82,241
+Los Angeles,2011,82,219
+Los Angeles,2012,82,194
+Los Angeles,2013,48,133
+Los Angeles,2014,82,206
+Los Angeles,2015,82,220
+Los Angeles,2016,82,225
+Los Angeles,2017,82,201
+Los Angeles,2018,82,239
+Los Angeles,2019,82,202
+Los Angeles,2020,70,178
+Los Angeles,2021,56,143
+Los Angeles,2022,82,239
+Los Angeles,2023,82,280
+Los Angeles,2024,82,256
+Los Angeles,2025,82,250
+San Jose,2006,82,266
+San Jose,2007,82,258
+San Jose,2008,82,222
+San Jose,2009,82,257
+San Jose,2010,82,264
+San Jose,2011,82,248
+San Jose,2012,82,228
+San Jose,2013,48,124
+San Jose,2014,82,249
+San Jose,2015,82,228
+San Jose,2016,82,241
+San Jose,2017,82,221
+San Jose,2018,82,252
+San Jose,2019,82,289
+San Jose,2020,70,182
+San Jose,2021,56,151
+San Jose,2022,82,214
+San Jose,2023,82,234
+San Jose,2024,82,181
+San Jose,2025,82,210
+Vancouver,2006,82,256
+Vancouver,2007,82,222
+Vancouver,2008,82,213
+Vancouver,2009,82,246
+Vancouver,2010,82,272
+Vancouver,2011,82,262
+Vancouver,2012,82,249
+Vancouver,2013,48,127
+Vancouver,2014,82,196
+Vancouver,2015,82,242
+Vancouver,2016,82,191
+Vancouver,2017,82,182
+Vancouver,2018,82,218
+Vancouver,2019,82,225
+Vancouver,2020,69,228
+Vancouver,2021,56,151
+Vancouver,2022,82,249
+Vancouver,2023,82,276
+Vancouver,2024,82,279
+Vancouver,2025,82,236
+Vegas,2018,82,272
+Vegas,2019,82,249
+Vegas,2020,71,227
+Vegas,2021,82,191
+Vegas,2022,82,266
+Vegas,2023,82,272
+Vegas,2024,82,267
+Vegas,2025,82,275
+Seattle,2022,82,216
+Seattle,2023,82,289
+Seattle,2024,82,217
+Seattle,2025,82,247

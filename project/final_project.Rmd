@@ -1,0 +1,35 @@
+---
+title: "final_project"
+output: html_document
+---
+
+```{r}
+#loading libraries
+
+library(tidyverse)
+library(janitor)
+
+#loading data
+
+goals_data <- read_csv("jour405finaldata.csv") |> clean_names()
+
+#Based on what you told me I needed to properly complete my proposed project, I created my own dataset for team goal scoring per season based on the values provided in HockeyDB. Link here:https://www.hockeydb.com/ihdb/stats/leagues/141.html I went through each teams total goals for each of the last 20 years and built it into a spreadsheet, which I then converted into a CSV for this project.
+
+#The most important columns are going to be goals scored and year. The point of this project is to see if any of the goalie equipment rule changes from the last 20 years pulled off their intended purpose, increasing league-wide scoring. Games played is also a sneaky important column here. Due to lockouts and pandemics, not every season recorded in the data had a full 82 game slate like it was supposed to, so it's important to factor in the shortened seasons and base calculations on average rather than total numbers.
+
+#As far as my intentions for the project go, I think it's important to do both team-by-team breakdowns and a league-wide breakdown. Even if the overall numbers might not show a giant change, are there some teams who found ways to take advantage of the rule changes over the years? There's a lot of potential routes for this to go and given that the NHL's last change to goalie equipment regulations came in 2018, I think there might actually be some changes later in this data. 
+```
+```{r}
+#Here's the basic plan of attack for each team:
+
+capitals <- goals_data |> 
+  filter(str_detect(team, "Washington")) |>
+  mutate(average = (goals_scored/games_played))
+
+#Build this out for all teams in dataset then calculate the p-values to see if  changes actually occurred, then from there measure the effect size to see how much they really worked. After that, find the years with the biggest statistically observed changes and see if they match up with any of the years where goalie equipment regulation changes were made. Once each team is done I plan make a new dataframe checking what years had the most results, then see if the league-wide numbers confirm the goalie equipment changes.
+
+#Side notes, for teams who relocated I'll merge their data into one table (Arizona/Utah and Atlanta/Winnipeg). For expansion teams (Vegas and Seattle), things might look a little weird since they don't have the full 20 year sample
+
+#I'll address this in my weekly question, but I just want to see the best way to find p-value and effect size for this data before I get too far along. What's the basic code template I should be using for each team
+```
+
