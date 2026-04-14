@@ -49,5 +49,23 @@ matches |>
 
 ### Task 6: Describe the results of both the correlation calculation and the scatterplot.
 
+The correlation calculation came in at about 0.02, meaning there isn't really any relationship between fouls and goal differential. Then on the scatterplot with its line of best fit, it was a nearly-flat line over the middle of the data. Based on both the correlation calculation and the scatterplot, there really isn't a strong relationship between fouls and goal differential. Other things seem to matter more for soccer teams winning
+
+### Task 7: Choose a new variable to measure!
+
+```{r}
+matches |> summarize(correlation = cor(corners, goal_diff, method="pearson"))
+```
+
+```{r}
+
+matches |> 
+  ggplot() +
+  geom_point(aes(x=goal_diff, y=corners)) +
+  geom_smooth(aes(x=goal_diff, y=corners), method="lm")
+
+```
+
+Results: There is a slightly stronger corellation between corners and goal differential, with teams that take more corner kicks in a given game tending to win more often than teams who kick fewer. The new calculation was about 0.38, much higher than the value seen in fouls. The scatterplot also showed more of a pattern, with a noticeable positive shift with more corners results in better goal differentials. There is some kind of relationship here, but it doesn't seem like the strongest factor in play.
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
