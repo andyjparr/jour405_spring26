@@ -13,6 +13,7 @@ Your task in this assignment will be to examine the relationship between those t
 ### Task 1: Load the tidyverse
 
 ```{r}
+library(tidyverse)
 ```
 
 ### Task 2: Load the GDP and DJIA data
@@ -20,6 +21,7 @@ Your task in this assignment will be to examine the relationship between those t
 Load the GDP data from https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/gdp_djia.csv
 
 ```{r}
+gdp_djia_data <- read_csv("https://raw.githubusercontent.com/dwillis/jour405/refs/heads/main/data/gdp_djia.csv")
 ```
 
 ### Task 3: Calculate the correlation coefficient
@@ -27,6 +29,7 @@ Load the GDP data from https://raw.githubusercontent.com/dwillis/jour405/refs/he
 Use the `cor()` function to calculate the correlation coefficient between the DJIA and GDP.
 
 ```{r}
+gdp_djia_data |> summarize(correlation = cor(GDP, DJIA, method="pearson"))
 ```
 
 ### Task 4: Create a scatterplot
@@ -34,12 +37,21 @@ Use the `cor()` function to calculate the correlation coefficient between the DJ
 Use the `ggplot()` function to create a scatterplot of the DJIA and GDP. Be sure to label your axes and add a title.
 
 ```{r}
+gdp_djia_data |> 
+  ggplot() +
+  geom_point(aes(x=GDP, y=DJIA)) +
+  geom_smooth(aes(x=GDP, y=DJIA), method="lm") +
+  labs(
+    x = "GDP Value",
+    y = "DJIA Value",
+    title = "GDP and DJIA rise and fall together"
+  )
 ```
 
 ### Task 5: Describe our results
 
 Write a few sentences about the relationship between the DJIA and GDP. Is there a strong correlation between the two variables? What does the scatterplot show?
 
+Yes, there is a very strong, positive correlation between the DJIA and GDP. The pearson calculation put the coefficient at about 0.95, very close to the maximum possible value of 1.00 This relationship is also reflect in the scatterplot and its line of best fit. For quarters with a lower GDP, the DJIA was also lower. Same goes with higher GDPs having higher DJIAs, creating a line of best fit that was nearly a perfect 45 degrees.
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
-
