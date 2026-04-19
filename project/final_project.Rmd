@@ -13,6 +13,10 @@ library(janitor)
 
 goals_data <- read_csv("jour405finaldata.csv") |> clean_names()
 
+better_goals_data <- read_csv("teams_2008_to_2024.csv") |> clean_names()
+
+better_goals_data <- better_goals_data |> filter(str_detect(situation, "all")) # <-- This step is CRUCIAL so that all the stats are in one place instead of separating each team into four different rows for each season
+
 #Based on what you told me I needed to properly complete my proposed project, I created my own dataset for team goal scoring per season based on the values provided in HockeyDB. Link here:https://www.hockeydb.com/ihdb/stats/leagues/141.html I went through each teams total goals for each of the last 20 years and built it into a spreadsheet, which I then converted into a CSV for this project.
 
 #The most important columns are going to be goals scored and year. The point of this project is to see if any of the goalie equipment rule changes from the last 20 years pulled off their intended purpose, increasing league-wide scoring. Games played is also a sneaky important column here. Due to lockouts and pandemics, not every season recorded in the data had a full 82 game slate like it was supposed to, so it's important to factor in the shortened seasons and base calculations on average rather than total numbers.
@@ -32,4 +36,34 @@ capitals <- goals_data |>
 
 #I'll address this in my weekly question, but I just want to see the best way to find p-value and effect size for this data before I get too far along. What's the basic code template I should be using for each team
 ```
+
+WEEK TWO UPDATE:
+
+I found a new csv that has more data to play with, only thing is it only goes back to 2008 instead of 2006 so I can't measure every rule change I intended. The csv comes from MoneyPuck.com (https://moneypuck.com/data.htm?utm_). There's a few more details in the "loading data" section about the biggest cleaning step I took for this CSV to make it usable. Since I worked too hard on that custom CSV before I won't delete it from the project... but just know that it's fairly obsolete now.
+
+Anyways, here's the plan: Use the following as the basic code block template for each team
+
+```{r}
+capitals <- better_goals_data |> 
+  filter(str_detect(team, "WSH")) |>
+  mutate(goals_average = (goals_for/games_played))
+```
+
+Measure p-values and effect size during the years with the highest increase. Then, with this specific CSV, check out whether or not each team had unsustainably high rates of shots, saves or expected goals. I still need a bit of guidance on how to do the p-value and effect size part, but I finally found a better CSV with a lot of variables to consider. Would a scatterplot with linear regression models potentially be better as well? I really want your advice on the best way to approach this project before I bury myself too deep.
+
+If I go the scatterplot route, I think I'd be doing stuff like this:
+
+```{r}
+capitals |> 
+  ggplot() +
+  geom_point(aes(x=season, y=goals_average)) +
+  geom_smooth(aes(x=season, y=goals_average), method="lm") +
+  labs(
+    x = "Year",
+    y = "Goals per Game"
+  )
+```
+With this, it's easier to spot the years with the change. Is there a way to layer in other variables like shots or saves for these scatterplots to keep the data in one place? Sorry for not having as much work done this week, I spent a long time trying to find a usable CSV with the extra data you wanted me to find.
+
+
 
