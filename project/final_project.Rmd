@@ -65,5 +65,105 @@ capitals |>
 ```
 With this, it's easier to spot the years with the change. Is there a way to layer in other variables like shots or saves for these scatterplots to keep the data in one place? Sorry for not having as much work done this week, I spent a long time trying to find a usable CSV with the extra data you wanted me to find.
 
+WEEK THREE:
+
+I used the code you made for me as a template and tested a bunch of code this week. It worked patially, but I have a few blocks with errors, (those have comments next to them highlighting when errors occurred). I think next week after I've done some work with creating multivariable regression models I will probably switch over to those, but this is what I came up with for the time being. What's interesting is that based on these line charts, the year with the largest increase didn't even have a rule change. There's also a bunch of advanced metrics for each season within the MoneyPuck data, so I'm not sure if I should try touching those for extra info or just stick to goals, shots and saves (I couldn't find an actual saves column in the data but you can see how I figured out that issue).
+
+Once I get these through their multivariable regression I think I'll be able to start drawing some conclusions and might make some extra team-specific charts to see if certain clubs found better ways to exploit the rule changes than the rest of the league.
+
+```{r}
+league_goals <- better_goals_data |>
+  group_by(season) |>
+  summarize(goals_per_game = sum(goals_for) / sum(games_played)) |>
+  mutate(
+    post_2006 = season >= 2006,   # post-lockout equipment cut
+    post_2013 = season >= 2013,   # trapezoid expansion
+    post_2018 = season >= 2018    # chest/arm + pants reductions
+  )
+
+lm(goals_per_game ~ season + post_2006 + post_2013 + post_2018, data = league_goals) |>
+  summary() # <-- Unlike the other ones in this code block, this one ran fine
+
+league_shots <- better_goals_data |>
+  group_by(season) |>
+  summarize(shots_per_game = sum(shots_on_goal_for) / sum(games_played)) |>
+  mutate(
+    post_2006_shots = season >= 2006,   # post-lockout equipment cut
+    post_2013_shots = season >= 2013,   # trapezoid expansion
+    post_2018_shots = season >= 2018    # chest/arm + pants reductions
+  )
+
+lm(shots_per_game ~ season + post_2006_shots + post_2013_shots + post_2018_shots, data = league_goals) |>
+  summary() # <-- This one is giving me an error
+
+league_goals_against <- better_goals_data |>
+  group_by(season) |>
+  summarize(ga_per_game = sum(goals_against) / sum(games_played)) |>
+  mutate(
+    post_2006_ga = season >= 2006,   # post-lockout equipment cut
+    post_2013_ga = season >= 2013,   # trapezoid expansion
+    post_2018_ga = season >= 2018    # chest/arm + pants reductions
+  )
+
+lm(ga_per_game ~ season + post_2006_ga + post_2013_ga + post_2018_ga, data = league_goals) |>
+  summary() # <-- Another error
+
+league_save <- better_goals_data |>
+  group_by(season) |>
+  summarize(save_per_game = sum(shots_on_goal_against - goals_against) / sum(games_played)) |>
+  mutate(
+    post_2006_sa = season >= 2006,   # post-lockout equipment cut
+    post_2013_sa = season >= 2013,   # trapezoid expansion
+    post_2018_sa = season >= 2018    # chest/arm + pants reductions
+  )
+
+lm(save_per_game ~ season + post_2006_sa + post_2013_sa + post_2018_sa, data = league_goals) |>
+  summary() <-- # As expected, one more error
+```
+
+```{r}
+league_goals |>  
+ggplot() +
+  geom_line(aes(x=season, y=goals_per_game)) +
+  geom_smooth(aes(x=season, y=goals_per_game), method="lm") +
+  labs(
+    x = "Year",
+    y = "Goals per Game"
+  )
+
+league_shots |>  
+  ggplot() +
+  geom_line(aes(x=season, y=shots_per_game)) +
+  geom_smooth(aes(x=season, y=shots_per_game), method="lm") +
+  labs(
+    x = "Year",
+    y = "Shots per Game"
+  )
+
+league_goals_against |>  
+  ggplot() +
+  geom_line(aes(x=season, y=ga_per_game)) +
+  geom_smooth(aes(x=season, y=ga_per_game), method="lm") +
+  labs(
+    x = "Year",
+    y = "Goals Against per Game"
+  )
+
+league_save |>  
+  ggplot() +
+  geom_line(aes(x=season, y=save_per_game)) +
+  geom_smooth(aes(x=season, y=save_per_game), method="lm") +
+  labs(
+    x = "Year",
+    y = "Saves per Game"
+  )
+
+# Can I overlay these charts? 
+
+# Also with critical thinking skills I realized doing GF/GA results in identical charts... oh well
+```
+
+
+
 
 
