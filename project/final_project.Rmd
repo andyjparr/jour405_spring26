@@ -69,7 +69,7 @@ WEEK THREE:
 
 I used the code you made for me as a template and tested a bunch of code this week. It worked patially, but I have a few blocks with errors, (those have comments next to them highlighting when errors occurred). I think next week after I've done some work with creating multivariable regression models I will probably switch over to those, but this is what I came up with for the time being. What's interesting is that based on these line charts, the year with the largest increase didn't even have a rule change. There's also a bunch of advanced metrics for each season within the MoneyPuck data, so I'm not sure if I should try touching those for extra info or just stick to goals, shots and saves (I couldn't find an actual saves column in the data but you can see how I figured out that issue).
 
-Once I get these through their multivariable regression I think I'll be able to start drawing some conclusions and might make some extra team-specific charts to see if certain clubs found better ways to exploit the rule changes than the rest of the league.
+Once I get these through their multivariable regression I think I'll be able to start drawing some conclusions and might make some extra team-specific charts to see if certain clubs found better ways to exploit the rule changes than the rest of the league. Overall, project seems to be in a good spot, just want to figure out what's going wrong with these code blocks!
 
 ```{r}
 league_goals <- better_goals_data |>
