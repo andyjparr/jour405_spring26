@@ -8,6 +8,7 @@ output: html_document
 
 library(tidyverse)
 library(janitor)
+library(corrplot)
 
 #loading data
 
@@ -163,6 +164,36 @@ league_save |>
 # Also with critical thinking skills I realized doing GF/GA results in identical charts... oh well
 ```
 
+```{r}
+league_goals <- better_goals_data |>
+  group_by(season) |>
+  summarize(goals_per_game = sum(goals_for) / sum(games_played)) |>
+  mutate(
+    post_2008 = season >= 2008,   # post-lockout equipment cut
+    post_2013 = season >= 2013,   # trapezoid expansion
+    post_2018 = season >= 2018    # chest/arm + pants reductions
+  ) |>
+  mutate(shots_per_game = sum(shots_on_goal_for) / sum(games_played))
+
+# I'm trying to add shots per game and saves per game to this dataframe so that I can add them for multiple regression, help needed
+
+
+
+league_goals <- better_goals_data |>
+    group_by(season) |>
+  summarize(shots_per_game = sum(shots_on_goal_for) / sum(games_played)) |>
+      group_by(season) |>
+      summarize(saves_per_game = save_per_game = sum(shots_on_goal_against - goals_against)) / sum(games_played)
+
+lm(goals_per_game ~ season + post_2008 + post_2013 + post_2018, data = league_goals) |>
+  summary()
+
+selected_vars <- league_goals |>  select(goals_per_game, post_2008, post_2013, post_2018)
+cor(selected_vars)
+
+corr_matrix <- cor(selected_vars)
+corrplot(corr_matrix, method = "circle")
+```
 
 
 
