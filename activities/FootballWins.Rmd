@@ -26,7 +26,7 @@ teams <- read_csv("https://raw.githubusercontent.com/dwillis/jour405_files/main/
 Next, we construct a linear model to analyze how different factors like `Yards Gained`, `Takeaways`, and `Points Scored` influence the number of wins. This model helps us quantify the relationships and assess which factors are significant predictors of success.
 
 ```{r}
-model <- lm(Wins ~ `Yards Gained` + Takeaways + `Points Scored`, data = teams)
+model <- lm(Wins ~ Takeaways + `Points Scored`, data = teams)
 summary(model)
 ```
 
@@ -54,14 +54,14 @@ The coefficients tell us the estimated effect of each independent variable on th
 
 Is this a useful model, based on what you've seen? Why?
 
-ANSWER HERE
+It's tough to say. While things like the p-value and adjusted r-squared seem to say that there's a statistically significant pattern in play here, the minimum and maximum values show that it can still be off by four in either direction. That might not feel like much, but for an NFL season that's 25% of each team's games. If the model has an eight-win team that could really be as high as 12 or as low as four.
 
 ## Correlation Analysis
 
 After building the model, we calculate the correlation matrix for our variables of interest. This matrix helps visualize the strength and direction of the relationships between each pair of variables.
 
 ```{r}
-selected_vars <- teams |>  select(`Yards Gained`, Takeaways, `Points Scored`, Wins)
+selected_vars <- teams |>  select(`Yards Gained`, Takeaways, `Points Scored`, Wins, Giveaways, 'Yards Allowed')
 cor(selected_vars)
 ```
 
@@ -80,8 +80,10 @@ The results from our correlation analysis show the strength of the relationships
 
 Which of these three factors - Yards Gained, Takeaways and Points Scored - have the most impact on wins? Are there any that do not seem impactful at all?
 
-ANSWER HERE
+Points scored has the greatest positive impact on wins, while yards allowed has the highest negative impact on wins. All of these variables seem to have some kind of effect on team wins, but yards gained has by far the least impact of the variables available in this model.
 
 ## Using the Model (3 points)
 
 Without using the words "multiple regression model", describe how you could use this model to cover a team or game.
+
+Analyze the team's yards allowed compared to other NFL teams for the week, pointing out the pattern to help explain the team's success (or lack there of). You could also use the other major factor, points scored, to compare it around the league. Basically the best way to contextualize this data without saying "multiple regression model" is throw it into the greater overall league picture. Show how the team you're covering performed in these predictive metrics compared to the other teams who played.
