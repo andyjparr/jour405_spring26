@@ -1,0 +1,136 @@
+---
+title: "final_project_clean"
+output: html_document
+author: Andy Parr
+---
+Step 1: Load up the libraries/data. Also do this filter to make sure you're using the correct rows for the goals data.
+```{r}
+#loading libraries
+
+library(tidyverse)
+library(janitor)
+library(corrplot)
+
+#loading data
+
+better_goals_data <- read_csv("teams_2008_to_2024.csv") |> clean_names()
+
+better_goals_data <- better_goals_data |> filter(str_detect(situation, "all")) # <-- This step is CRUCIAL so that all the stats are in one place instead of separating each team into four different rows for each season (data source: https://moneypuck.com/data.htm?utm_)
+```
+Step 2: Select the right columns from the data set to create a new dataframe that includes average goals, shots and saves, plus qualifiers for the major rule changes. Additionally, this step finds the lm models for each variable and the rule changes.
+```{r}
+# Now using the code you helped me fix, thanks!
+
+league_goals <- better_goals_data |>
+  group_by(season) |>
+  summarize(goals_per_game = sum(goals_for) / sum(games_played)) |>
+  mutate(
+    post_2006 = season >= 2006,   # post-lockout equipment cut
+    post_2013 = season >= 2013,   # trapezoid expansion
+    post_2018 = season >= 2018    # chest/arm + pants reductions
+  )
+
+lm(goals_per_game ~ season + post_2006 + post_2013 + post_2018, data = league_goals) |>
+  summary()
+
+league_shots <- better_goals_data |>
+  group_by(season) |>
+  summarize(shots_per_game = sum(shots_on_goal_for) / sum(games_played)) |>
+  mutate(
+    post_2006_shots = season >= 2006,   # post-lockout equipment cut
+    post_2013_shots = season >= 2013,   # trapezoid expansion
+    post_2018_shots = season >= 2018    # chest/arm + pants reductions
+  )
+
+lm(shots_per_game ~ season + post_2006_shots + post_2013_shots + post_2018_shots, data = league_shots) |>
+  summary()
+
+league_save <- better_goals_data |>
+  group_by(season) |>
+  summarize(save_per_game = sum(shots_on_goal_against - goals_against) / sum(games_played)) |>
+  mutate(
+    post_2006_sa = season >= 2006,   # post-lockout equipment cut
+    post_2013_sa = season >= 2013,   # trapezoid expansion
+    post_2018_sa = season >= 2018    # chest/arm + pants reductions
+  )
+
+lm(save_per_game ~ season + post_2006_sa + post_2013_sa + post_2018_sa, data = league_save) |>
+  summary()
+```
+Step 3: Do a quick visualization of the 2018 scoring increase that was noticed in these initial tests. Compare it to shots to show that volume stayed the same during the same time.
+```{r}
+scoring_bump_2018 <- league_goals |> 
+  ggplot() +
+  geom_point(aes(x=season, y=goals_per_game)) +
+  geom_smooth(aes(x=season, y=goals_per_game), method="lm") +
+  geom_vline(xintercept = 2018, color = "red", size = 1, linetype = "solid") +
+  labs(
+    x = "Year",
+    y = "Goals per Game"
+  )
+scoring_bump_2018
+
+year_by_year_shots <- league_shots |> 
+  ggplot() +
+  geom_point(aes(x=season, y=shots_per_game)) +
+  geom_smooth(aes(x=season, y=shots_per_game), method="lm") +
+  geom_vline(xintercept = 2018, color = "red", size = 1, linetype = "solid") +
+  labs(
+    x = "Year",
+    y = "Shots per Game"
+  )
+year_by_year_shots
+```
+
+Step 4: Join all those new dataframes to do some math
+```{r}
+league_combined <- league_goals |>
+  left_join(league_shots |> select(season, shots_per_game), by = "season") |>
+  left_join(league_save |> select(season, save_per_game), by = "season")
+```
+Step 5: Perform a few different multiple regression tests to see which has the strongest relationship and visualize
+```{r}
+# Model 1 (Full model)
+
+model1 <- lm(goals_per_game ~ post_2013 + post_2018 + shots_per_game + save_per_game, data = league_combined)
+summary(model1)
+
+# Model 2
+model2 <- lm(goals_per_game ~ shots_per_game + save_per_game, data = league_combined)
+summary(model2)
+
+# Model 3
+model3 <- lm(goals_per_game ~ post_2013 + post_2018, data = league_combined)
+summary(model3)
+
+# Model 4
+model4 <- lm(goals_per_game ~ post_2013 + post_2018 + save_per_game, data = league_combined)
+summary(model4)
+
+# Compare models
+cat("Model 1 (Full model) - Adjusted R-squared:", summary(model1)$adj.r.squared, "\n")
+cat("Model 2 - Adjusted R-squared:", summary(model2)$adj.r.squared, "\n")
+cat("Model 3 - Adjusted R-squared:", summary(model3)$adj.r.squared, "\n")
+cat("Model 4 - Adjusted R-squared:", summary(model4)$adj.r.squared, "\n")
+
+# Create comparison chart
+model_names <- c("Full model", "Model 2", "Model 3", "Model 4")
+adj_r_squared <- c(summary(model1)$adj.r.squared,
+                   summary(model2)$adj.r.squared,
+                   summary(model3)$adj.r.squared,
+                   summary(model4)$adj.r.squared)
+
+model_comparison <- data.frame(Model = model_names, Adjusted_R_squared = adj_r_squared)
+ggplot(model_comparison, aes(x = reorder(Model, Adjusted_R_squared), y = Adjusted_R_squared)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Model Comparison by Adjusted R-squared",
+       x = "Model")
+```
+Step 6: Analysis
+
+Following all these code adjustments, regression analysis and significance tests, the NHL's effort to increase goal scoring through rule changes worked in 2018 when the league forced goalies to use smaller, less bulky equipment. Goals went up by about .217 starting in that post-rule change era and the p-value is below 0.05 (statistically significant). Additionally, the shots and saves per game did NOT see a significant change during the dataset, indicating that there were not significant changes in the way teams were playing on the ice, but rather the league made it easier to score and a greater percentage of shots started beating goalies after the rule changes.
+
+In other words, (without math), this analysis indicates that scoring increased following the 2018 goalie equipment regulation changes because it made team's shots more efficient, there was no really change in the shot volume.
+
+STORY PITCH: The NHL's goalie pad adjustment in 2018 increased league-wide scoring by a little more than 0.21 goals per game. In the same time, there were no significant changes in shots taken, meaning teams became more efficient with scoring, this was not a result of higher shot volume.
