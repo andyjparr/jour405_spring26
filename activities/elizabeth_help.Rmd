@@ -1,0 +1,188 @@
+---
+title: "elizabeth_help"
+output: html_document
+---
+
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
+
+
+Final Project Test Ideas: 
+- I definitely want to run a simulation to see if, when I randomly sample certain chiefs games, where they compare to games that Taylor Swift attended. 
+- In my brain, what I'm going to consider "Taylor Swift Affected Games" are the games she attended and then the two games afterwards. I'll take the mean and SD of those games and consider that the population of Taylor Swift games. I want to then compare randomly sampled games from before 2023 (before Travis and Taylor attended) to those games and see if there is any change/difference.
+- I also kind of want to compare whether or not attendance changes in the two games after. I could maybe compare the games that Taylor attends to the two games following, but I'm unsure of how I could do that. I could find the mean of Taylor games and then the mean of the games following, but I don't know if that would work. 
+- I want to do an hypothesis test but I'm unsure how to go about it. The null would be Taylor Swift doesn't affect in-person Chief's games attendance. The alternate hypothesis would be Taylor Swift does affect it. I'm not exactly sure how I could simulate that, so I'd need some help. 
+- I also think I could analyze how the game she attended (and the game the week after) compare to previous years with the same opponent, to try and control for who they are playing. For example, if Taylor attended the Eagles game in 2024 and the game after was against the 49ers, I could compare how attendence for Chiefs vs. Eagles and Chiefs vs. 49ers attendance was in previous years. 
+- I feel like my biggest struggle right now is getting the data to work with me. I can't even find the mean attendance by week because some of my columns aren't numeric. I tried to even create a function to do it, but I just can't figure it out. I also think with a lot of these ideas I'm going to need to reformat the data to make it easier for me to manipulate, but I'm not sure how to do that.  
+- I'm also under the impression that the null hypothesis is going to remain true because Chiefs games are popular, but that's kind of what I want to prove anyway. 
+
+```{r}
+library(tidyverse)
+library(readr)
+```
+
+Here, I am loading up the tidyverse and readr to allow myself to analyze the data correctly. 
+
+
+
+
+```{r}
+library(readr)
+nfl_attendance_25 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSbp3ApjVnRb1Hn5ZvAljgdUfAo_9h2SUpMDpWohkibZFXXuxdfflDqhQNo8bDv6T6bvagd9ElXe8Tq/pub?gid=1860385982&single=true&output=csv")
+
+nfl_attendance_24 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTJD4pEJMx2E6ZwgRGAOYgzLA-hlPgi4ncAIChFKTQqj2VQXNB0GHH5WW4JIY2ty7pCMCKgyKd8yvp9/pub?gid=1809535861&single=true&output=csv")
+
+nfl_attendance_23 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSH4DJykatnnOPVRRNaXXDFbayGwSzdBe0E9WCOO2cVaeyYDibp1tBNWHLS-1E0EcNl8Su5W3LzNf6A/pub?gid=1071365491&single=true&output=csv")
+
+nfl_attendance_22 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSMGvArhs4WtmqIPFdiikCpZzk4JqOGGEP8IZzgUdxw-qld5K2qRJWOVE-lNn7KbeOQC-bx9a9MV40j/pub?gid=1753832751&single=true&output=csv")
+
+nfl_attendance_21 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vS5iE43Sg9njlwgoYc1zJuHyI9rFbh6BgSpU2KbE0XW4TWwBcba2vCSueIeed9iZH5Ozu8Ig8hxyBub/pub?gid=1772701353&single=true&output=csv")
+
+nfl_attendance_20 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSXKYT-bUHh6v_LABNbyv1rKUuWKGeCvyQxlYkn321fwUA-LP4ITAbsFww5DYS5Z1eP9K9j2X1nTufC/pub?gid=1406948821&single=true&output=csv")
+
+nfl_attendance_19 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQhQ2wVYW5tjnMFhRQPAPHODZwFi2JItJy2D9W7pHurmpFQCLdw15rjYJ5_Cv3fJLm6DvnAztX-87k7/pub?gid=879147847&single=true&output=csv")
+
+nfl_attendance_18 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSKFNWmcoUaCL0jYn54Ayf8UGxJ5R3qMAxXebDN_XyIa0QolvsP6cepJHFhK9CPmjjU36THHwxiAosZ/pub?gid=1396054314&single=true&output=csv")
+
+nfl_attendance_17 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vThICcScQU8VsKd_U2rV9hJlmpxUAmoA_Cs4zGtzrWH8kPZV_BrnieixrSyW4XYDfF6h8yWDP4M_LHV/pub?output=csv")
+
+nfl_attendance_16 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSGzNDmciJOvJNuIhpIuO55_LUlphWq6Pq-bSORV-MDPQjKA-3sjRgo4hRYP01Z_31rz6tpqBUIgk1x/pub?gid=51438010&single=true&output=csv")
+
+nfl_attendance_15 <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTJcopswsvGlddmiOCN63p_OCuJcGWjcYg4wbVRNVwc_8lu7NSU-vHdI0vO9FGFMwqfH8LEFzibPo3F/pub?gid=962935019&single=true&output=csv")
+```
+
+Here, I loaded up all my data from published spreadsheets I created. The data includes weekly attendance to NFL stadiums from 2015 to 2025. Each spreadsheet has the attendance to each stadium by week for each season. 
+
+
+
+
+```{r}
+nfl_attendance <- bind_rows(
+ nfl_attendance_25 |> mutate(season = 2025) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance)),
+ nfl_attendance_24 |> mutate(season = 2024) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance)),
+ nfl_attendance_23 |> mutate(season = 2023) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance)),
+ nfl_attendance_22 |> mutate(season = 2022) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance)),
+ nfl_attendance_21 |> mutate(season = 2021) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance)),
+ nfl_attendance_20 |> mutate(season = 2020) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance)),
+ nfl_attendance_19 |> mutate(season = 2019) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance)),
+ nfl_attendance_18 |> mutate(season = 2018) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance)),
+ nfl_attendance_17 |> mutate(season = 2017) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance)),
+ nfl_attendance_16 |> mutate(season = 2016) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance)),
+ nfl_attendance_15 |> mutate(season = 2015) |> pivot_longer(starts_with("Week"),names_to = "week",values_to = "attendance",values_transform = list(attendance = as.character) ) |>mutate(attendance = parse_number(attendance))
+) |> filter(!is.na(attendance))
+```
+
+Here, I combined all the spreadsheet and data into one object so it's easily accessible. I also switched the weeks attendance into columns rather than rows, so I was able to find the average attendance across a season for a specific team. 
+
+
+
+
+
+```{r}
+superbowl_winners <- tibble(
+  Year = c(2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015),  # season years
+  winner = c("Philadelphia Eagles", "Kansas City Chiefs","Kansas City Chiefs", "Los Angeles Rams", "Tampa Bay Buccaneers", "Kansas City Chiefs", "New England Patriots", "Philadelphia Eagles", "New England Patriots","Denver Broncos","New England Patriots") 
+)
+
+superbowl_winners <- superbowl_winners |>
+  mutate(Year = as.numeric(Year))
+
+nfl_attendance <- nfl_attendance |>
+  mutate(season = as.numeric(season))
+
+nfl_attendance <- nfl_attendance %>%
+  left_join(superbowl_winners, by = c("season" = "Year"))
+```
+
+
+
+```{r}
+superbowl_winners <- superbowl_winners |>
+  mutate(next_season = Year + 1)
+```
+
+```{r}
+defending_champs <- superbowl_winners |>
+  select(next_season, winner) |>
+  rename(season = next_season, defending_champ = winner)
+```
+
+```{r}
+nfl_attendance <- nfl_attendance |>
+  left_join(defending_champs, by = "season") |>
+  mutate(is_defending_champ = Tm == defending_champ)
+```
+
+```{r}
+team_season_avg <- nfl_attendance |>
+  group_by(Tm, season) |>
+  summarize(
+    avg_attendance = mean(attendance, na.rm = TRUE),
+    home_avg       = mean(attendance[str_detect(week, "Week")], na.rm = TRUE),
+    is_defending_champ = any(is_defending_champ, na.rm = TRUE),
+    .groups = "drop"
+  )
+```
+
+```{r}
+team_season_avg <- team_season_avg |>
+  arrange(Tm, season) |>
+  group_by(Tm) |>
+  mutate(
+    prev_avg    = lag(avg_attendance),
+    pct_change  = (avg_attendance - prev_avg) / prev_avg * 100
+  ) |>
+  ungroup()
+```
+
+```{r}
+team_season_clean <- team_season_avg |>
+  filter(!season %in% c(2020, 2021), !is.na(pct_change))
+
+team_season_clean <- team_season_avg |>
+  mutate(team = coalesce(Tm, "League Totals")) |>
+  filter(!season %in% c(2020, 2021), !is.na(pct_change))
+```
+
+```{r}
+champ_changes     <- team_season_clean |> filter(is_defending_champ == TRUE)  |> pull(pct_change)
+non_champ_changes <- team_season_clean |> filter(is_defending_champ == FALSE) |> pull(pct_change)
+
+cat("Defending champions — mean pct change:", round(mean(champ_changes), 2), "%\n")
+cat("All other teams   — mean pct change:", round(mean(non_champ_changes), 2), "%\n")
+cat("Number of defending-champion seasons:", length(champ_changes), "\n\n")
+
+t.test(champ_changes, non_champ_changes)
+```
+
+```{r}
+year_by_year_league_wide <- team_season_clean |> 
+  filter(str_detect(team, "League Totals")) |>
+  ggplot() +
+  geom_line(aes(x=season, y=avg_attendance)) +
+  geom_smooth(aes(x=season, y=avg_attendance), method="lm") +
+  labs(
+    x = "Year",
+    y = "Average Attendance"
+  )
+year_by_year_league_wide
+```
+
+
+
+
+
+
+
+
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
