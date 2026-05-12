@@ -7,7 +7,7 @@ Follow along with the demo to learn how to calculate standard deviation and how 
 ### Task 1: Load the tidyverse
 
 ```{r}
-library(tidyverse)
+library(tidyverse) 
 ```
 
 
