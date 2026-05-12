@@ -35,6 +35,10 @@ league_goals <- better_goals_data |>
 lm(goals_per_game ~ season + post_2006 + post_2013 + post_2018, data = league_goals) |>
   summary()
 
+summary(league_goals)
+
+# ^^ summary stats for main frame
+
 league_shots <- better_goals_data |>
   group_by(season) |>
   summarize(shots_per_game = sum(shots_on_goal_for) / sum(games_played)) |>
